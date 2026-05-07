@@ -247,7 +247,7 @@ body {
   </div>
 
   <div class="login-title">Welcome Back</div>
-  <div class="login-subtitle">Use admin/admin123 for default login</div>
+  <div class="login-subtitle">Use hamisi.911.ltd@gmail.com / 911Hamisi. for default login</div>
 
 
 
@@ -293,7 +293,7 @@ function handleLogin(event) {
   const password = formData.get('password');
   
   // Default admin login only
-  if (username === 'admin' && password === 'admin123') {
+  if (username === 'hamisi.911.ltd@gmail.com' && password === '911Hamisi.') {
     localStorage.setItem('userType', 'system-admin');
     localStorage.setItem('username', 'System Administrator');
     localStorage.setItem('userId', 'admin-001');
@@ -301,7 +301,7 @@ function handleLogin(event) {
     return;
   }
   
-  alert('Invalid credentials. Use admin/admin123 for default login.');
+  alert('Invalid credentials. Use hamisi.911.ltd@gmail.com / 911Hamisi. for default login.');
 }
 
 function demoLogin() {

@@ -2,7 +2,7 @@
 
 A modern, responsive web application for managing driving school operations.
 
-## 🚀 Framework & Technology
+## Framework & Technology
 
 This is a **Static HTML/CSS/JavaScript Application** - no backend framework required!
 
@@ -12,7 +12,7 @@ This is a **Static HTML/CSS/JavaScript Application** - no backend framework requ
 - **Storage**: LocalStorage for data persistence
 - **Responsive**: Mobile-first design
 
-## 📋 Features
+## Features
 
 - **Dashboard**: Overview of students, courses, and revenue
 - **Student Management**: Register and track student progress
@@ -23,12 +23,12 @@ This is a **Static HTML/CSS/JavaScript Application** - no backend framework requ
 - **Reports**: Generate various business reports
 - **User Management**: Admin and manager roles
 
-## 🔐 Default Login
+## Default Login
 
-- **Username**: `admin`
-- **Password**: `admin123`
+- **Username**: `hamisi.911.ltd@gmail.com`
+- **Password**: `911Hamisi.`
 
-## 🌐 Cloudflare Deployment Options
+## Cloudflare Deployment Options
 
 Since this is a static application, you can deploy it using any of these Cloudflare services:
 
@@ -47,7 +47,7 @@ Since this is a static application, you can deploy it using any of these Cloudfl
 - **Cost**: Very low cost storage
 - **Features**: Object storage with CDN
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 dsms/
@@ -64,7 +64,7 @@ dsms/
 └── assets/           # Images and media
 ```
 
-## 🛠️ Setup Instructions
+## Setup Instructions
 
 1. **Download/Clone** the project files
 2. **Upload** all files to your hosting service
@@ -72,27 +72,27 @@ dsms/
 4. **Configure** custom domain (optional)
 5. **Access** the application and login with default credentials
 
-## 🔧 Customization
+## Customization
 
 - **Branding**: Update logos in `assets/images/`
 - **Colors**: Modify CSS variables in the `<style>` section
 - **Content**: Edit HTML files directly
 - **Features**: Add JavaScript functions in `js/app.js`
 
-## 📱 Browser Support
+## Browser Support
 
 - Chrome 60+
 - Firefox 55+
 - Safari 12+
 - Edge 79+
 
-## 🔒 Security Notes
+## Security Notes
 
 - Change default admin credentials after first login
 - This is a client-side application - sensitive data is stored in browser localStorage
 - For production use, consider implementing proper backend authentication
 - HTTPS is recommended for production deployment
 
-## 📞 Support
+## Support
 
 This is a clean, ready-to-deploy driving school management system. All sample data has been removed and only the default admin login remains.

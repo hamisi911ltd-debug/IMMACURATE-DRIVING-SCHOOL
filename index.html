@@ -657,7 +657,7 @@
       </div>
       <div class="stat-label">Pending Payments</div>
       <div class="stat-value">0</div>
-      <div class="stat-trend up">All clear</div>iv class="stat-trend down">↓ 2 overdue alerts</div>
+      <div class="stat-trend up">All clear</div>
     </div>
   </div>
 
@@ -679,7 +679,7 @@
         <tbody>
           <tr>
             <td colspan="4" style="text-align:center;padding:40px;color:var(--text-muted);">
-              <div style="font-size:48px;margin-bottom:16px;">📚</div>
+              <div style="font-size:48px;margin-bottom:16px;">Books</div>
               <div style="font-size:16px;font-weight:600;margin-bottom:8px;">No recent enrollments</div>
               <div style="font-size:14px;">New student registrations will appear here</div>
             </td>
@@ -692,7 +692,7 @@
         <div class="card-header"><div class="card-title">Alerts</div></div>
         <div style="display:flex;flex-direction:column;gap:10px;">
           <div style="text-align:center;padding:30px;color:var(--text-muted);">
-            <div style="font-size:48px;margin-bottom:16px;">✅</div>
+            <div style="font-size:48px;margin-bottom:16px;">Check</div>
             <div style="font-size:16px;font-weight:600;margin-bottom:8px;">All Clear</div>
             <div style="font-size:14px;">No alerts or issues to report</div>
           </div>
@@ -706,7 +706,7 @@
       <div class="card-header"><div class="card-title">Today's Schedule</div><span class="badge info">0 Lessons</span></div>
       <div>
         <div style="text-align:center;padding:40px;color:var(--text-muted);">
-          <div style="font-size:48px;margin-bottom:16px;">📅</div>
+          <div style="font-size:48px;margin-bottom:16px;">Calendar</div>
           <div style="font-size:16px;font-weight:600;margin-bottom:8px;">No lessons scheduled</div>
           <div style="font-size:14px;">Schedule your first lesson to get started</div>
         </div>
@@ -844,7 +844,7 @@
       <tbody id="studentsTable">
         <tr>
           <td colspan="6" style="text-align:center;padding:40px;color:var(--text-muted);">
-            <div style="font-size:48px;margin-bottom:16px;">👥</div>
+            <div style="font-size:48px;margin-bottom:16px;">Users</div>
             <div style="font-size:16px;font-weight:600;margin-bottom:8px;">No students registered yet</div>
             <div style="font-size:14px;">Click "Add Student" to register your first student</div>
           </td>
@@ -1558,7 +1558,7 @@
         </div>
         <div class="form-group">
           <label class="form-label">Course Icon</label>
-          <input class="form-control" name="icon" placeholder="🚗">
+          <input class="form-control" name="icon" placeholder="Car">
         </div>
       </div>
       <div style="display:flex;gap:12px;margin-top:20px;">
@@ -4973,11 +4973,11 @@ function sendReceiptWhatsApp() {
   }
   
   // Create WhatsApp message with receipt details
-  const message = `🧾 *PAYMENT RECEIPT*
+  const message = `PAYMENT RECEIPT
   
-🏫 *IMMACURATE DRIVING SCHOOL*
+*IMMACURATE DRIVING SCHOOL*
 
-📋 *Receipt Details:*
+*Receipt Details:*
 • Receipt No: #${currentReceiptData.receiptNo}
 • Student: ${currentReceiptData.student}
 • Course: ${currentReceiptData.course}
@@ -4986,7 +4986,7 @@ function sendReceiptWhatsApp() {
 • Date: ${currentReceiptData.date}
 • Status: ${currentReceiptData.status}
 
-✅ Payment received successfully!
+Payment received successfully!
 
 Thank you for choosing Immacurate Driving School.
 "Your journey to safe driving starts here!"
@@ -4996,7 +4996,7 @@ Email: info@immacurate.co.ke
 
 ---
 *GLOTECH - YOUR TECHNOLOGY PARTNER*
-📞 0759159881`;
+0759159881`;
 
   // Encode message for URL
   const encodedMessage = encodeURIComponent(message);

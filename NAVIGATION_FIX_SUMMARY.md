@@ -49,7 +49,7 @@ The navigation function was not properly hiding and showing sections due to CSS 
 - Server running on http://localhost:8000 for testing
 
 ## Result
-✅ Each navigation item now correctly shows its respective content:
+Each navigation item now correctly shows its respective content:
 - Dashboard → Dashboard content
 - Students → Students content  
 - Courses → Courses content

@@ -1,17 +1,17 @@
-# 🚀 Cloudflare Deployment Guide
+# Cloudflare Deployment Guide
 
 ## Framework: Static HTML/CSS/JavaScript Application
 
 Your Driving School Management System is a **pure static web application** that requires no backend server or database. This makes it perfect for Cloudflare's static hosting services.
 
-## 🎯 Recommended Deployment: Cloudflare Pages
+## Recommended Deployment: Cloudflare Pages
 
 ### Why Cloudflare Pages?
-- ✅ **Free tier** with generous limits
-- ✅ **Automatic deployments** from GitHub
-- ✅ **Global CDN** for fast loading
-- ✅ **Custom domains** and SSL certificates
-- ✅ **Preview deployments** for testing
+- **Free tier** with generous limits
+- **Automatic deployments** from GitHub
+- **Global CDN** for fast loading
+- **Custom domains** and SSL certificates
+- **Preview deployments** for testing
 
 ### Step-by-Step Deployment:
 
@@ -55,7 +55,7 @@ Your code is already pushed to: `https://github.com/hamisi911ltd-debug/IMMACURAT
 4. Enter your domain (e.g., `dsms.yourdomain.com`)
 5. Follow DNS configuration instructions
 
-## 🔧 Alternative Deployment Options
+## Alternative Deployment Options
 
 ### Option 2: Cloudflare Workers Sites
 ```bash
@@ -78,9 +78,9 @@ wrangler publish
 3. Enable public access
 4. Configure custom domain
 
-## 📋 Post-Deployment Checklist
+## Post-Deployment Checklist
 
-- [ ] Test login with `admin` / `admin123`
+- [ ] Test login with `hamisi.911.ltd@gmail.com` / `911Hamisi.`
 - [ ] Verify all pages load correctly
 - [ ] Test responsive design on mobile
 - [ ] Check all forms and modals work
@@ -89,7 +89,7 @@ wrangler publish
 - [ ] Configure SSL certificate
 - [ ] Test from different locations
 
-## 🔐 Security Recommendations
+## Security Recommendations
 
 1. **Change Default Credentials**
    - Login and change admin password immediately
@@ -106,7 +106,7 @@ wrangler publish
    - Cloud backup integration
    - Database migration for production use
 
-## 🌍 Global Performance
+## Global Performance
 
 Your static site will be automatically distributed across Cloudflare's global network:
 - **200+ locations worldwide**
@@ -114,7 +114,7 @@ Your static site will be automatically distributed across Cloudflare's global ne
 - **Automatic caching and optimization**
 - **DDoS protection included**
 
-## 💰 Cost Estimation
+## Cost Estimation
 
 ### Cloudflare Pages (Recommended)
 - **Free Tier**: 1 build per minute, 500 builds/month
@@ -126,13 +126,13 @@ Your static site will be automatically distributed across Cloudflare's global ne
 - **Paid Tier**: $5/month for 10M requests
 - **Perfect for**: High-traffic schools
 
-## 🚀 Go Live!
+## Go Live!
 
 Your Driving School Management System is now ready for production use on Cloudflare's global network!
 
 **Live URL**: `https://dsms-driving-school.pages.dev` (after deployment)
 
-## 📞 Need Help?
+## Need Help?
 
 - **Cloudflare Docs**: [developers.cloudflare.com/pages](https://developers.cloudflare.com/pages)
 - **Community**: [community.cloudflare.com](https://community.cloudflare.com)

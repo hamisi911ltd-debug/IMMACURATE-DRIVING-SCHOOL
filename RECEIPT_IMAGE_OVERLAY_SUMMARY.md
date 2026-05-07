@@ -75,24 +75,24 @@ Updated the receipt system to use the exact receipt image (receipt.jpeg) with ov
 
 ## Features Maintained
 
-### ✅ **Sequential Receipt Numbers**
+### **Sequential Receipt Numbers**
 - Still starts from 001 and increments
 - Displayed prominently on the receipt image
 
-### ✅ **Payment-Specific Data**
+### **Payment-Specific Data**
 - Student name, course, amount, method, date, status
 - All information overlaid on the original receipt
 
-### ✅ **Print Functionality**
+### **Print Functionality**
 - Opens in new window for printing
 - Uses exact receipt image as background
 - Professional appearance maintained
 
-### ✅ **WhatsApp Integration**
+### **WhatsApp Integration**
 - Still includes formatted receipt details
 - Professional messaging maintained
 
-### ✅ **Preview System**
+### **Preview System**
 - Shows actual receipt image with data
 - Real-time preview updates
 - Exact representation of final receipt
