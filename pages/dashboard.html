@@ -1,0 +1,140 @@
+<!-- DASHBOARD -->
+<section class="section active" id="dashboard">
+  <div class="stats-grid">
+    <div class="stat-card blue">
+      <div class="stat-icon blue">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </div>
+      <div class="stat-label">Total Students</div>
+      <div class="stat-value">248</div>
+      <div class="stat-trend up">↑ 12% this month</div>
+    </div>
+    <div class="stat-card green">
+      <div class="stat-icon green">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      </div>
+      <div class="stat-label">Active Courses</div>
+      <div class="stat-value">6</div>
+      <div class="stat-trend up">↑ 2 new this month</div>
+    </div>
+    <div class="stat-card amber">
+      <div class="stat-icon amber">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+      </div>
+      <div class="stat-label">Revenue This Month</div>
+      <div class="stat-value">KES 1.2M</div>
+      <div class="stat-trend up">↑ 8% vs last month</div>
+    </div>
+    <div class="stat-card red">
+      <div class="stat-icon red">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      </div>
+      <div class="stat-label">Pending Payments</div>
+      <div class="stat-value">4</div>
+      <div class="stat-trend down">↓ 2 overdue alerts</div>
+    </div>
+  </div>
+
+  <div class="row-grid">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Recent Enrollments</div>
+        <span class="card-link" onclick="navigate('students',document.querySelectorAll('.nav-item')[1])">View All →</span>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Student</th>
+            <th>Course</th>
+            <th>Enrolled</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td data-label="Student"><div class="avatar-group"><div class="avatar" style="background:#DBEAFE;color:#1D4ED8;">AK</div><div><div style="font-weight:600;font-size:13px;">Amina Kamau</div><div style="font-size:11px;color:var(--text-muted);">+254 712 345 678</div></div></div></td>
+            <td data-label="Course"><span class="tag">Class B</span></td>
+            <td data-label="Enrolled" style="color:var(--text-muted);font-size:12px;">May 5, 2026</td>
+            <td data-label="Status"><span class="badge success">Active</span></td>
+          </tr>
+          <tr>
+            <td data-label="Student"><div class="avatar-group"><div class="avatar" style="background:#F0FDF4;color:#15803D;">BN</div><div><div style="font-weight:600;font-size:13px;">Brian Njoroge</div><div style="font-size:11px;color:var(--text-muted);">+254 722 456 789</div></div></div></td>
+            <td data-label="Course"><span class="tag">Class A</span></td>
+            <td data-label="Enrolled" style="color:var(--text-muted);font-size:12px;">May 4, 2026</td>
+            <td data-label="Status"><span class="badge warning">Pending</span></td>
+          </tr>
+          <tr>
+            <td data-label="Student"><div class="avatar-group"><div class="avatar" style="background:#FFF7ED;color:#C2410C;">CM</div><div><div style="font-weight:600;font-size:13px;">Cynthia Muthoni</div><div style="font-size:11px;color:var(--text-muted);">+254 733 567 890</div></div></div></td>
+            <td data-label="Course"><span class="tag">Defensive</span></td>
+            <td data-label="Enrolled" style="color:var(--text-muted);font-size:12px;">May 3, 2026</td>
+            <td data-label="Status"><span class="badge success">Active</span></td>
+          </tr>
+          <tr>
+            <td data-label="Student"><div class="avatar-group"><div class="avatar" style="background:#FDF2F8;color:#9D174D;">DW</div><div><div style="font-weight:600;font-size:13px;">Dennis Waweru</div><div style="font-size:11px;color:var(--text-muted);">+254 700 678 901</div></div></div></td>
+            <td data-label="Course"><span class="tag">Class B</span></td>
+            <td data-label="Enrolled" style="color:var(--text-muted);font-size:12px;">May 2, 2026</td>
+            <td data-label="Status"><span class="badge danger">Overdue</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card">
+        <div class="card-header"><div class="card-title">Pass Rate</div></div>
+        <div style="display:flex;align-items:center;justify-content:center;padding:8px 0;">
+          <svg width="130" height="130" viewBox="0 0 130 130">
+            <circle cx="65" cy="65" r="52" fill="none" stroke="#F0F4FA" stroke-width="12"/>
+            <circle cx="65" cy="65" r="52" fill="none" stroke="#F4A124" stroke-width="12" stroke-dasharray="294" stroke-dashoffset="50" stroke-linecap="round" transform="rotate(-90 65 65)"/>
+            <text x="65" y="60" text-anchor="middle" font-family="Syne,sans-serif" font-size="26" font-weight="800" fill="#0D1B3E">83%</text>
+            <text x="65" y="78" text-anchor="middle" font-size="11" fill="#6B7A99">Pass Rate</text>
+          </svg>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px;">
+          <div style="text-align:center;padding:10px;background:var(--success-bg);border-radius:10px;">
+            <div style="font-size:18px;font-weight:800;font-family:'Syne',sans-serif;color:var(--success);">186</div>
+            <div style="font-size:11px;color:#0F7043;font-weight:600;">Passed</div>
+          </div>
+          <div style="text-align:center;padding:10px;background:var(--danger-bg);border-radius:10px;">
+            <div style="font-size:18px;font-weight:800;font-family:'Syne',sans-serif;color:var(--danger);">38</div>
+            <div style="font-size:11px;color:#B91C1C;font-weight:600;">Retake</div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-title">Alerts</div></div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;gap:10px;align-items:flex-start;padding:10px;background:var(--danger-bg);border-radius:10px;border-left:3px solid var(--danger);">
+            <div style="font-size:16px;">⚠️</div>
+            <div><div style="font-size:13px;font-weight:600;color:var(--danger);">4 Overdue Payments</div><div style="font-size:12px;color:var(--text-muted);">Students need follow-up</div></div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;padding:10px;background:var(--warning-bg);border-radius:10px;border-left:3px solid var(--warning);">
+            <div style="font-size:16px;">📅</div>
+            <div><div style="font-size:13px;font-weight:600;color:#92580A;">3 Tests Scheduled Today</div><div style="font-size:12px;color:var(--text-muted);">09:00, 11:00, 14:00</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row-grid">
+    <div class="card">
+      <div class="card-header"><div class="card-title">Today's Schedule</div><span class="badge info">7 Lessons</span></div>
+      <div>
+        <div class="schedule-item"><div class="schedule-time">08:00</div><div class="schedule-dot"></div><div class="schedule-info"><div class="schedule-name">Amina Kamau — Practical Lesson 4</div><div class="schedule-detail">Instructor: Peter Otieno · Vehicle: KBZ 123A</div></div><span class="badge success">Done</span></div>
+        <div class="schedule-item"><div class="schedule-time">10:00</div><div class="schedule-dot blue"></div><div class="schedule-info"><div class="schedule-name">Brian Njoroge — Theory Class 2</div><div class="schedule-detail">Room A · Class B Manual</div></div><span class="badge info">Ongoing</span></div>
+        <div class="schedule-item"><div class="schedule-time">11:30</div><div class="schedule-dot green"></div><div class="schedule-info"><div class="schedule-name">Cynthia Muthoni — Mock Test</div><div class="schedule-detail">Instructor: Sarah Njeri · Vehicle: KCF 456B</div></div><span class="badge warning">Upcoming</span></div>
+        <div class="schedule-item"><div class="schedule-time">14:00</div><div class="schedule-dot"></div><div class="schedule-info"><div class="schedule-name">Dennis Waweru — Practical Lesson 1</div><div class="schedule-detail">Instructor: Peter Otieno · Vehicle: KBZ 123A</div></div><span class="badge warning">Upcoming</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">Course Enrollment</div></div>
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div><div style="display:flex;justify-content:space-between;font-size:13px;font-weight:600;"><span>Class B (Manual)</span><span>96 students</span></div><div class="progress-bar"><div class="progress-fill info" style="width:78%"></div></div></div>
+        <div><div style="display:flex;justify-content:space-between;font-size:13px;font-weight:600;"><span>Class B (Auto)</span><span>72 students</span></div><div class="progress-bar"><div class="progress-fill" style="width:58%"></div></div></div>
+        <div><div style="display:flex;justify-content:space-between;font-size:13px;font-weight:600;"><span>Class A (Motorcycle)</span><span>40 students</span></div><div class="progress-bar"><div class="progress-fill success" style="width:32%"></div></div></div>
+        <div><div style="display:flex;justify-content:space-between;font-size:13px;font-weight:600;"><span>Defensive Driving</span><span>28 students</span></div><div class="progress-bar"><div class="progress-fill danger" style="width:22%"></div></div></div>
+        <div><div style="display:flex;justify-content:space-between;font-size:13px;font-weight:600;"><span>Heavy Commercial</span><span>12 students</span></div><div class="progress-bar"><div class="progress-fill" style="width:10%;background:var(--info)"></div></div></div>
+      </div>
+    </div>
+  </div>
+</section>

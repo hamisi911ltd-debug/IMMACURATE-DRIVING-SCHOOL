@@ -1,0 +1,36 @@
+<!-- STUDENTS CONTENT -->
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;" class="students-filters">
+  <div style="display:flex;gap:8px;flex-wrap:wrap;">
+    <button class="btn btn-outline btn-sm" onclick="filterStudents('all',this)" style="background:var(--navy);color:var(--white);border-color:var(--navy);">All (248)</button>
+    <button class="btn btn-outline btn-sm" onclick="filterStudents('active',this)">Active (186)</button>
+    <button class="btn btn-outline btn-sm" onclick="filterStudents('pending',this)">Pending (38)</button>
+    <button class="btn btn-outline btn-sm" onclick="filterStudents('overdue',this)">Overdue (24)</button>
+  </div>
+  <button class="btn btn-accent" onclick="openModal('addStudentModal')">
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    Add Student
+  </button>
+</div>
+
+<div class="card">
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Student</th>
+        <th>Course</th>
+        <th>Lessons</th>
+        <th>Balance</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="studentsTable">
+      <tr><td data-label="Student"><div class="avatar-group"><div class="avatar" style="background:#DBEAFE;color:#1D4ED8;">AK</div><div><div style="font-weight:600;font-size:13px;">Amina Kamau</div><div style="font-size:11px;color:var(--text-muted);">+254 712 345 678</div></div></div></td><td data-label="Course"><span class="tag">Class B Manual</span></td><td data-label="Lessons" style="font-size:13px;"><b>8</b>/20</td><td data-label="Balance" style="font-size:13px;font-weight:600;color:var(--success);">KES 0</td><td data-label="Status"><span class="badge success">Active</span></td><td data-label="Action"><button class="btn btn-outline btn-sm" onclick="viewStudent('Amina Kamau')">View</button></td></tr>
+      <tr><td data-label="Student"><div class="avatar-group"><div class="avatar" style="background:#F0FDF4;color:#15803D;">BN</div><div><div style="font-weight:600;font-size:13px;">Brian Njoroge</div><div style="font-size:11px;color:var(--text-muted);">+254 722 456 789</div></div></div></td><td data-label="Course"><span class="tag">Class A</span></td><td data-label="Lessons" style="font-size:13px;"><b>3</b>/15</td><td data-label="Balance" style="font-size:13px;font-weight:600;color:var(--warning);">KES 4,600</td><td data-label="Status"><span class="badge warning">Pending</span></td><td data-label="Action"><button class="btn btn-outline btn-sm" onclick="viewStudent('Brian Njoroge')">View</button></td></tr>
+      <tr><td data-label="Student"><div class="avatar-group"><div class="avatar" style="background:#FFF7ED;color:#C2410C;">CM</div><div><div style="font-weight:600;font-size:13px;">Cynthia Muthoni</div><div style="font-size:11px;color:var(--text-muted);">+254 733 567 890</div></div></div></td><td data-label="Course"><span class="tag">Defensive</span></td><td data-label="Lessons" style="font-size:13px;"><b>12</b>/12</td><td data-label="Balance" style="font-size:13px;font-weight:600;color:var(--success);">KES 0</td><td data-label="Status"><span class="badge success">Active</span></td><td data-label="Action"><button class="btn btn-outline btn-sm" onclick="viewStudent('Cynthia Muthoni')">View</button></td></tr>
+      <tr><td data-label="Student"><div class="avatar-group"><div class="avatar" style="background:#FDF2F8;color:#9D174D;">DW</div><div><div style="font-weight:600;font-size:13px;">Dennis Waweru</div><div style="font-size:11px;color:var(--text-muted);">+254 700 678 901</div></div></div></td><td data-label="Course"><span class="tag">Class B</span></td><td data-label="Lessons" style="font-size:13px;"><b>1</b>/20</td><td data-label="Balance" style="font-size:13px;font-weight:600;color:var(--danger);">KES 14,300</td><td data-label="Status"><span class="badge danger">Overdue</span></td><td data-label="Action"><button class="btn btn-outline btn-sm" onclick="viewStudent('Dennis Waweru')">View</button></td></tr>
+      <tr><td data-label="Student"><div class="avatar-group"><div class="avatar" style="background:#F0F9FF;color:#0369A1;">EM</div><div><div style="font-weight:600;font-size:13px;">Esther Muiru</div><div style="font-size:11px;color:var(--text-muted);">+254 711 789 012</div></div></div></td><td data-label="Course"><span class="tag">Class B Manual</span></td><td data-label="Lessons" style="font-size:13px;"><b>16</b>/20</td><td data-label="Balance" style="font-size:13px;font-weight:600;color:var(--success);">KES 0</td><td data-label="Status"><span class="badge success">Active</span></td><td data-label="Action"><button class="btn btn-outline btn-sm" onclick="viewStudent('Esther Muiru')">View</button></td></tr>
+      <tr><td data-label="Student"><div class="avatar-group"><div class="avatar" style="background:#FFFBEB;color:#B45309;">FO</div><div><div style="font-weight:600;font-size:13px;">Francis Ochieng</div><div style="font-size:11px;color:var(--text-muted);">+254 722 890 123</div></div></div></td><td data-label="Course"><span class="tag">Heavy Comm.</span></td><td data-label="Lessons" style="font-size:13px;"><b>5</b>/30</td><td data-label="Balance" style="font-size:13px;font-weight:600;color:var(--warning);">KES 12,000</td><td data-label="Status"><span class="badge warning">Pending</span></td><td data-label="Action"><button class="btn btn-outline btn-sm" onclick="viewStudent('Francis Ochieng')">View</button></td></tr>
+    </tbody>
+  </table>
+</div>

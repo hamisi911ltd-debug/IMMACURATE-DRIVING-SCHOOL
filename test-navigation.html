@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navigation Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .nav { margin-bottom: 20px; }
+        .nav button { margin-right: 10px; padding: 10px 15px; cursor: pointer; }
+        .nav button.active { background: #0D1B3E; color: white; }
+        .section { display: none !important; padding: 20px; border: 1px solid #ccc; margin: 10px 0; }
+        .section.active { display: block !important; }
+        .section h2 { color: #0D1B3E; }
+    </style>
+</head>
+<body>
+    <h1>Navigation Test</h1>
+    
+    <div class="nav">
+        <button onclick="navigate('dashboard', this)">Dashboard</button>
+        <button onclick="navigate('students', this)">Students</button>
+        <button onclick="navigate('courses', this)">Courses</button>
+        <button onclick="navigate('payments', this)">Payments</button>
+    </div>
+    
+    <div id="dashboard" class="section active">
+        <h2>Dashboard Section</h2>
+        <p>This is the dashboard content. You should see this by default.</p>
+    </div>
+    
+    <div id="students" class="section">
+        <h2>Students Section</h2>
+        <p>This is the students content. You should see this when clicking Students.</p>
+    </div>
+    
+    <div id="courses" class="section">
+        <h2>Courses Section</h2>
+        <p>This is the courses content. You should see this when clicking Courses.</p>
+    </div>
+    
+    <div id="payments" class="section">
+        <h2>Payments Section</h2>
+        <p>This is the payments content. You should see this when clicking Payments.</p>
+    </div>
+    
+    <script>
+        function navigate(sectionId, navButton) {
+            console.log('Navigating to:', sectionId);
+            
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(s => {
+                s.classList.remove('active');
+                s.style.display = 'none';
+            });
+            
+            // Show target section
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+                targetSection.style.display = 'block';
+                console.log('Showing section:', sectionId);
+            } else {
+                console.error('Section not found:', sectionId);
+            }
+            
+            // Update nav buttons
+            document.querySelectorAll('.nav button').forEach(btn => btn.classList.remove('active'));
+            if (navButton) {
+                navButton.classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>

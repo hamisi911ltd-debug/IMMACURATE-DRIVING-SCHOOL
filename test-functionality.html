@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Function Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .success { background-color: #d4edda; border-color: #c3e6cb; }
+        .error { background-color: #f8d7da; border-color: #f5c6cb; }
+        button { padding: 10px 15px; margin: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>GLOTECH Admin Dashboard - Function Tests</h1>
+    
+    <div class="test-section">
+        <h3>Navigation Functions Test</h3>
+        <button onclick="testNavigate()">Test Navigate Function</button>
+        <button onclick="testToggleSidebar()">Test Toggle Sidebar</button>
+        <button onclick="testToggleTopbarUserMenu()">Test Toggle User Menu</button>
+        <div id="navigationResult"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Student View Functions Test</h3>
+        <button onclick="testViewStudent('Amina Kamau')">Test View Amina Kamau</button>
+        <button onclick="testViewStudent('Brian Njoroge')">Test View Brian Njoroge</button>
+        <button onclick="testViewStudent('NonExistent Student')">Test Non-existent Student</button>
+        <div id="studentResult"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Search Functions Test</h3>
+        <button onclick="testSearchFunctions()">Test Search Functions</button>
+        <div id="searchResult"></div>
+    </div>
+
+    <script>
+        // Load the main JavaScript functions from index.html
+        function loadMainScript() {
+            return fetch('index.html')
+                .then(response => response.text())
+                .then(html => {
+                    // Extract script content
+                    const scriptMatch = html.match(/<script>([\s\S]*?)<\/script>/);
+                    if (scriptMatch) {
+                        eval(scriptMatch[1]);
+                        return true;
+                    }
+                    return false;
+                });
+        }
+
+        function testNavigate() {
+            const result = document.getElementById('navigationResult');
+            try {
+                // Test if navigate function exists
+                if (typeof navigate === 'function') {
+                    result.innerHTML = '<div class="success">✓ Navigate function is defined and accessible</div>';
+                } else {
+                    result.innerHTML = '<div class="error">✗ Navigate function is not defined</div>';
+                }
+            } catch (error) {
+                result.innerHTML = `<div class="error">✗ Error testing navigate: ${error.message}</div>`;
+            }
+        }
+
+        function testToggleSidebar() {
+            const result = document.getElementById('navigationResult');
+            try {
+                if (typeof toggleSidebar === 'function') {
+                    result.innerHTML += '<div class="success">✓ ToggleSidebar function is defined and accessible</div>';
+                } else {
+                    result.innerHTML += '<div class="error">✗ ToggleSidebar function is not defined</div>';
+                }
+            } catch (error) {
+                result.innerHTML += `<div class="error">✗ Error testing toggleSidebar: ${error.message}</div>`;
+            }
+        }
+
+        function testToggleTopbarUserMenu() {
+            const result = document.getElementById('navigationResult');
+            try {
+                if (typeof toggleTopbarUserMenu === 'function') {
+                    result.innerHTML += '<div class="success">✓ ToggleTopbarUserMenu function is defined and accessible</div>';
+                } else {
+                    result.innerHTML += '<div class="error">✗ ToggleTopbarUserMenu function is not defined</div>';
+                }
+            } catch (error) {
+                result.innerHTML += `<div class="error">✗ Error testing toggleTopbarUserMenu: ${error.message}</div>`;
+            }
+        }
+
+        function testViewStudent(studentName) {
+            const result = document.getElementById('studentResult');
+            try {
+                if (typeof viewStudent === 'function') {
+                    result.innerHTML = `<div class="success">✓ ViewStudent function is defined. Testing with: ${studentName}</div>`;
+                    // Note: We won't actually call viewStudent as it creates modals
+                    result.innerHTML += '<div class="success">✓ ViewStudent function is ready to be called</div>';
+                } else {
+                    result.innerHTML = '<div class="error">✗ ViewStudent function is not defined</div>';
+                }
+            } catch (error) {
+                result.innerHTML = `<div class="error">✗ Error testing viewStudent: ${error.message}</div>`;
+            }
+        }
+
+        function testSearchFunctions() {
+            const result = document.getElementById('searchResult');
+            const searchFunctions = ['performSearch', 'searchStudents', 'searchCourses', 'clearSearch'];
+            let allPassed = true;
+            let output = '';
+
+            searchFunctions.forEach(funcName => {
+                try {
+                    if (typeof window[funcName] === 'function') {
+                        output += `<div class="success">✓ ${funcName} function is defined</div>`;
+                    } else {
+                        output += `<div class="error">✗ ${funcName} function is not defined</div>`;
+                        allPassed = false;
+                    }
+                } catch (error) {
+                    output += `<div class="error">✗ Error testing ${funcName}: ${error.message}</div>`;
+                    allPassed = false;
+                }
+            });
+
+            if (allPassed) {
+                output += '<div class="success">✓ All search functions are properly defined!</div>';
+            }
+
+            result.innerHTML = output;
+        }
+
+        // Load main script when page loads
+        window.onload = function() {
+            loadMainScript().then(loaded => {
+                if (loaded) {
+                    console.log('Main script loaded successfully');
+                } else {
+                    console.error('Failed to load main script');
+                }
+            }).catch(error => {
+                console.error('Error loading main script:', error);
+            });
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,1495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>Immacurate Driving School - Student Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<style>
+/* Student-specific overrides */
+.sidebar { background: linear-gradient(180deg, var(--navy) 0%, var(--navy-mid) 100%); }
+.student-only { display: block; }
+.admin-only { display: none !important; }
+.nav-item.disabled { opacity: 0.5; cursor: not-allowed; }
+.nav-item.disabled:hover { background: transparent; }
+
+/* TOPBAR USER MENU */
+.topbar-user-menu {
+  position: relative;
+  margin-left: 16px;
+}
+.topbar-user-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.topbar-user-card:hover {
+  background: var(--bg);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.topbar-user-avatar {
+  width: 32px;
+  height: 32px;
+  background: var(--accent);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--navy);
+  flex-shrink: 0;
+}
+.topbar-user-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.topbar-user-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+}
+.topbar-user-role {
+  font-size: 11px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+.topbar-user-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: var(--white);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  margin-top: 8px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.2s ease;
+  z-index: 1000;
+  min-width: 200px;
+  border: 1px solid var(--border);
+}
+.topbar-user-dropdown.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+.topbar-user-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.topbar-user-dropdown-item:hover {
+  background: var(--bg);
+}
+.topbar-user-dropdown-item:first-child {
+  border-radius: 10px 10px 0 0;
+}
+.topbar-user-dropdown-item:last-child {
+  border-radius: 0 0 10px 10px;
+}
+.topbar-user-dropdown-item.logout {
+  color: var(--danger);
+  border-top: 1px solid var(--border);
+}
+.topbar-user-dropdown-item.logout:hover {
+  background: var(--danger-bg);
+}
+
+/* Ensure admin section stays at bottom */
+.sidebar-nav { 
+  flex: 1; 
+  overflow-y: auto; 
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+}
+.sidebar-footer {
+  flex-shrink: 0;
+  margin-top: auto;
+}
+</style>
+</head>
+<body>
+
+<!-- Mobile Overlay -->
+<div class="mobile-overlay" id="mobileOverlay" onclick="closeSidebar()"></div>
+
+<!-- STUDENT SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-mark">
+      <div class="logo-icon-img">
+        <img src="assets/images/immacurate logo.jpeg" alt="Immacurate Logo">
+      </div>
+      <div>
+        <div class="logo-text">IMMACURATE</div>
+        <div class="logo-sub">Student Portal</div>
+      </div>
+    </div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Student</div>
+    <div class="nav-item active" onclick="navigate('dashboard',this)">
+      <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      My Dashboard
+    </div>
+    <div class="nav-item" onclick="navigate('schedule',this)">
+      <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      My Schedule
+    </div>
+    <div class="nav-item" onclick="navigate('progress',this)">
+      <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="8 12 12 16 16 12"/></svg>
+      My Progress
+    </div>
+    <div class="nav-section-label">Learning</div>
+    <div class="nav-item" onclick="navigate('courses',this)">
+      <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      My Course
+    </div>
+    <div class="nav-item" onclick="navigate('tests',this)">
+      <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      Tests & Results
+    </div>
+    <div class="nav-section-label">Account</div>
+    <div class="nav-item" onclick="navigate('payments',this)">
+      <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+      My Payments
+    </div>
+    <div class="nav-item" onclick="navigate('messages',this)">
+      <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      Messages
+      <span class="nav-badge">2</span>
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <div style="padding:8px 12px;color:rgba(255,255,255,0.6);font-size:12px;">
+      <div style="display:flex;align-items:center;justify-content:flex-start;gap:8px;margin-bottom:2px;">
+        <img src="assets/images/GLOTECH-LOGO.jpeg" alt="GLOTECH Logo" style="width:18px;height:18px;border-radius:3px;">
+        <div style="color:white;font-weight:600;font-size:11px;">GLOTECH</div>
+      </div>
+      <div style="color:rgba(255,255,255,0.7);font-size:9px;font-weight:500;line-height:1.2;margin-left:0px;">
+        YOUR TECHNOLOGY PARTNER<br>
+        0759159881
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <button class="topbar-btn hamburger" id="hamburger" onclick="toggleSidebar()" style="display:none;">
+    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+  <div class="topbar-title" id="topbarTitle">My Dashboard</div>
+  <div class="topbar-search">
+    <svg width="14" height="14" fill="none" stroke="#A0ADBF" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="text" placeholder="Search..." id="studentSearch" onkeyup="performStudentSearch()" oninput="performStudentSearch()">
+  </div>
+  
+  <!-- User Profile Dropdown in Top Right -->
+  <div class="topbar-user-menu">
+    <div class="topbar-user-card" onclick="toggleTopbarUserMenu()" id="topbarUserCard">
+      <div class="topbar-user-avatar">AS</div>
+      <div class="topbar-user-info">
+        <div class="topbar-user-name">Amina Kamau</div>
+        <div class="topbar-user-role">Student</div>
+      </div>
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="transition:transform 0.2s;" id="topbarUserArrow">
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
+    </div>
+    <div class="topbar-user-dropdown" id="topbarUserDropdown">
+      <div class="topbar-user-dropdown-item" onclick="openProfile()">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+        My Profile
+      </div>
+      <div class="topbar-user-dropdown-item logout" onclick="logout()">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+          <polyline points="16 17 21 12 16 7"></polyline>
+          <line x1="21" y1="12" x2="9" y2="12"></line>
+        </svg>
+        Logout
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+<!-- STUDENT DASHBOARD -->
+<section class="section active" id="dashboard">
+  <div class="stats-grid">
+    <div class="stat-card blue">
+      <div class="stat-icon blue">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <div class="stat-label">Lessons Completed</div>
+      <div class="stat-value">8/20</div>
+      <div class="stat-trend up">40% Complete</div>
+    </div>
+    <div class="stat-card green">
+      <div class="stat-icon green">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="stat-label">Tests Passed</div>
+      <div class="stat-value">3/4</div>
+      <div class="stat-trend up">75% Pass Rate</div>
+    </div>
+    <div class="stat-card amber">
+      <div class="stat-icon amber">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+      </div>
+      <div class="stat-label">Balance Due</div>
+      <div class="stat-value">KES 0</div>
+      <div class="stat-trend up">Fully Paid</div>
+    </div>
+    <div class="stat-card red">
+      <div class="stat-icon red">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      </div>
+      <div class="stat-label">Next Lesson</div>
+      <div class="stat-value">Tomorrow</div>
+      <div class="stat-trend down">10:00 AM</div>
+    </div>
+  </div>
+
+  <div class="row-grid">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">My Course Progress</div>
+      </div>
+      <div style="padding:20px;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:24px;font-weight:700;color:var(--navy);margin-bottom:8px;">Class B - Medium Vehicle</div>
+          <div style="font-size:14px;color:var(--text-muted);">Enrolled: May 5, 2026</div>
+        </div>
+        
+        <div style="margin-bottom:24px;">
+          <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+            <span style="font-size:14px;font-weight:600;">Overall Progress</span>
+            <span style="font-size:14px;font-weight:600;color:var(--accent);">40%</span>
+          </div>
+          <div class="progress-bar" style="height:8px;">
+            <div class="progress-fill" style="width:40%;background:var(--accent);"></div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <div style="text-align:center;padding:16px;background:var(--success-bg);border-radius:12px;">
+            <div style="font-size:20px;font-weight:700;color:var(--success);margin-bottom:4px;">8</div>
+            <div style="font-size:12px;color:#0F7043;font-weight:600;">Lessons Done</div>
+          </div>
+          <div style="text-align:center;padding:16px;background:var(--info-bg);border-radius:12px;">
+            <div style="font-size:20px;font-weight:700;color:var(--info);margin-bottom:4px;">12</div>
+            <div style="font-size:12px;color:#1D4ED8;font-weight:600;">Remaining</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card">
+        <div class="card-header"><div class="card-title">Upcoming Lessons</div></div>
+        <div>
+          <div class="schedule-item">
+            <div class="schedule-time">Tomorrow</div>
+            <div class="schedule-dot"></div>
+            <div class="schedule-info">
+              <div class="schedule-name">Practical Lesson 9</div>
+              <div class="schedule-detail">10:00 AM • Instructor: Peter Otieno</div>
+            </div>
+            <span class="badge warning">Upcoming</span>
+          </div>
+          <div class="schedule-item">
+            <div class="schedule-time">May 10</div>
+            <div class="schedule-dot blue"></div>
+            <div class="schedule-info">
+              <div class="schedule-name">Theory Test 2</div>
+              <div class="schedule-detail">2:00 PM • Room A</div>
+            </div>
+            <span class="badge info">Scheduled</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-header"><div class="card-title">Recent Messages</div></div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div style="padding:12px;background:var(--bg);border-radius:10px;">
+            <div style="font-size:13px;font-weight:600;margin-bottom:4px;">Lesson Reminder</div>
+            <div style="font-size:12px;color:var(--text-muted);">Your lesson tomorrow at 10:00 AM is confirmed.</div>
+            <div style="font-size:11px;color:var(--text-light);margin-top:4px;">2 hours ago</div>
+          </div>
+          <div style="padding:12px;background:var(--bg);border-radius:10px;">
+            <div style="font-size:13px;font-weight:600;margin-bottom:4px;">Test Results</div>
+            <div style="font-size:12px;color:var(--text-muted);">Congratulations! You passed Theory Test 1.</div>
+            <div style="font-size:11px;color:var(--text-light);margin-top:4px;">Yesterday</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OTHER SECTIONS (Simplified for students) -->
+<section class="section" id="schedule">
+  <div class="card">
+    <div class="card-header"><div class="card-title">My Schedule</div></div>
+    <div>
+      <div class="schedule-item">
+        <div class="schedule-time">Tomorrow 10:00</div>
+        <div class="schedule-dot"></div>
+        <div class="schedule-info">
+          <div class="schedule-name">Practical Lesson 9 - Highway Driving</div>
+          <div class="schedule-detail">Instructor: Peter Otieno • Vehicle: KBZ 123A</div>
+        </div>
+        <span class="badge warning">Upcoming</span>
+      </div>
+      <div class="schedule-item">
+        <div class="schedule-time">May 10 14:00</div>
+        <div class="schedule-dot blue"></div>
+        <div class="schedule-info">
+          <div class="schedule-name">Theory Test 2 - Traffic Rules</div>
+          <div class="schedule-detail">Room A • Duration: 1 hour</div>
+        </div>
+        <span class="badge info">Scheduled</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="progress">
+  <div class="card">
+    <div class="card-header"><div class="card-title">Learning Progress</div></div>
+    <div style="display:flex;flex-direction:column;gap:20px;">
+      <div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+          <span style="font-weight:600;">Theory Knowledge</span>
+          <span style="color:var(--success);">85%</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill success" style="width:85%"></div></div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+          <span style="font-weight:600;">Practical Skills</span>
+          <span style="color:var(--accent);">40%</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" style="width:40%"></div></div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+          <span style="font-weight:600;">Road Safety</span>
+          <span style="color:var(--success);">90%</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill success" style="width:90%"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="courses">
+  <div class="card">
+    <div class="card-header"><div class="card-title">My Course - Class B Medium Vehicle</div></div>
+    <div style="padding:20px;">
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;">
+        <div style="width:60px;height:60px;background:var(--success-bg);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:bold;color:var(--success);">B</div>
+        <div>
+          <div style="font-size:18px;font-weight:700;margin-bottom:4px;">Class B — Medium Vehicle</div>
+          <div style="font-size:14px;color:var(--text-muted);">Enrolled: May 5, 2026 • Fee: KES 14,300 (Paid)</div>
+        </div>
+      </div>
+      
+      <div style="margin-bottom:24px;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+          <span style="font-size:14px;font-weight:600;">Course Progress</span>
+          <span style="font-size:14px;font-weight:600;color:var(--accent);">40%</span>
+        </div>
+        <div class="progress-bar" style="height:8px;">
+          <div class="progress-fill" style="width:40%;background:var(--accent);"></div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:24px;">
+        <div style="text-align:center;padding:16px;background:var(--info-bg);border-radius:12px;">
+          <div style="font-size:20px;font-weight:700;color:var(--info);margin-bottom:4px;">8</div>
+          <div style="font-size:12px;color:#1D4ED8;font-weight:600;">Lessons Done</div>
+        </div>
+        <div style="text-align:center;padding:16px;background:var(--warning-bg);border-radius:12px;">
+          <div style="font-size:20px;font-weight:700;color:var(--warning);margin-bottom:4px;">12</div>
+          <div style="font-size:12px;color:#92580A;font-weight:600;">Remaining</div>
+        </div>
+        <div style="text-align:center;padding:16px;background:var(--success-bg);border-radius:12px;">
+          <div style="font-size:20px;font-weight:700;color:var(--success);margin-bottom:4px;">3</div>
+          <div style="font-size:12px;color:#0F7043;font-weight:600;">Tests Passed</div>
+        </div>
+      </div>
+
+      <div>
+        <div style="font-size:16px;font-weight:600;margin-bottom:12px;">Course Materials</div>
+        <div style="display:flex;flex-direction:column;gap:8px;" id="studentCourseMaterials">
+          <!-- Materials will be loaded dynamically -->
+        </div>
+        <div style="text-align:center;padding:20px;display:none;" id="noMaterialsMessage">
+          <svg width="48" height="48" fill="none" stroke="var(--text-muted)" stroke-width="1" viewBox="0 0 24 24" style="margin-bottom:12px;">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+          </svg>
+          <div style="font-size:14px;font-weight:600;margin-bottom:4px;color:var(--text-muted);">No materials available yet</div>
+          <div style="font-size:12px;color:var(--text-light);">Course materials will appear here when uploaded by instructors</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="tests">
+  <div class="card">
+    <div class="card-header"><div class="card-title">Tests & Results</div></div>
+    <div>
+      <div style="display:flex;align-items:center;gap:16px;padding:16px;background:var(--success-bg);border-radius:12px;margin-bottom:16px;">
+        <div style="width:40px;height:40px;background:var(--success);border-radius:50%;display:flex;align-items:center;justify-content:center;">
+          <svg width="20" height="20" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </div>
+        <div style="flex:1;">
+          <div style="font-weight:600;font-size:14px;">Theory Test 1 - Traffic Signs</div>
+          <div style="font-size:12px;color:var(--text-muted);">Completed: May 3, 2026</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:18px;font-weight:700;color:var(--success);">92%</div>
+          <div style="font-size:12px;color:var(--success);">Passed</div>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:16px;padding:16px;background:var(--success-bg);border-radius:12px;margin-bottom:16px;">
+        <div style="width:40px;height:40px;background:var(--success);border-radius:50%;display:flex;align-items:center;justify-content:center;">
+          <svg width="20" height="20" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </div>
+        <div style="flex:1;">
+          <div style="font-weight:600;font-size:14px;">Practical Test 1 - Basic Skills</div>
+          <div style="font-size:12px;color:var(--text-muted);">Completed: May 1, 2026</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:18px;font-weight:700;color:var(--success);">88%</div>
+          <div style="font-size:12px;color:var(--success);">Passed</div>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:16px;padding:16px;background:var(--warning-bg);border-radius:12px;margin-bottom:16px;">
+        <div style="width:40px;height:40px;background:var(--warning);border-radius:50%;display:flex;align-items:center;justify-content:center;">
+          <svg width="20" height="20" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+        </div>
+        <div style="flex:1;">
+          <div style="font-weight:600;font-size:14px;">Theory Test 2 - Traffic Rules</div>
+          <div style="font-size:12px;color:var(--text-muted);">Scheduled: May 10, 2026 at 2:00 PM</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:14px;font-weight:600;color:var(--warning);">Upcoming</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="payments">
+  <div class="card">
+    <div class="card-header"><div class="card-title">My Payments</div></div>
+    <div>
+      <div style="display:flex;align-items:center;gap:16px;padding:20px;background:var(--success-bg);border-radius:12px;margin-bottom:20px;">
+        <div style="width:50px;height:50px;background:var(--success);border-radius:12px;display:flex;align-items:center;justify-content:center;">
+          <svg width="24" height="24" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </div>
+        <div style="flex:1;">
+          <div style="font-size:18px;font-weight:700;color:var(--success);margin-bottom:4px;">Fully Paid</div>
+          <div style="font-size:14px;color:var(--text-muted);">Course fee: KES 14,300</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:20px;font-weight:700;color:var(--success);">KES 0</div>
+          <div style="font-size:12px;color:var(--success);">Balance</div>
+        </div>
+      </div>
+
+      <div style="margin-bottom:20px;">
+        <div style="font-size:16px;font-weight:600;margin-bottom:12px;">Payment History</div>
+        <div style="display:flex;align-items:center;gap:12px;padding:12px;border-bottom:1px solid var(--border);">
+          <div style="width:8px;height:8px;background:var(--success);border-radius:50%;"></div>
+          <div style="flex:1;">
+            <div style="font-weight:600;font-size:14px;">Course Fee Payment</div>
+            <div style="font-size:12px;color:var(--text-muted);">May 5, 2026 • M-Pesa</div>
+          </div>
+          <div style="font-weight:700;color:var(--success);">KES 14,300</div>
+        </div>
+      </div>
+
+      <div style="padding:16px;background:var(--info-bg);border-radius:12px;">
+        <div style="font-size:14px;font-weight:600;color:var(--info);margin-bottom:8px;">Payment Information</div>
+        <div style="font-size:12px;color:var(--text-muted);line-height:1.5;">
+          All payments are processed securely. For any payment inquiries, contact the admin office or call +254 700 000 000.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="messages">
+  <div class="card">
+    <div class="card-header"><div class="card-title">Messages</div></div>
+    <div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="padding:12px;background:var(--info-bg);border-radius:10px;border-left:4px solid var(--info);">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+            <div style="font-weight:600;font-size:14px;color:var(--info);">Lesson Reminder</div>
+            <div style="font-size:11px;color:var(--text-light);">2 hours ago</div>
+          </div>
+          <div style="font-size:13px;color:var(--text);margin-bottom:4px;">Hi Amina, your practical lesson tomorrow at 10:00 AM is confirmed with instructor Peter Otieno.</div>
+          <div style="font-size:12px;color:var(--text-muted);">Vehicle: KBZ 123A • Route: Highway Practice</div>
+        </div>
+
+        <div style="padding:12px;background:var(--success-bg);border-radius:10px;border-left:4px solid var(--success);">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+            <div style="font-weight:600;font-size:14px;color:var(--success);">Test Results</div>
+            <div style="font-size:11px;color:var(--text-light);">Yesterday</div>
+          </div>
+          <div style="font-size:13px;color:var(--text);margin-bottom:4px;">Congratulations! You passed Theory Test 1 with a score of 92%.</div>
+          <div style="font-size:12px;color:var(--text-muted);">Keep up the excellent work!</div>
+        </div>
+
+        <div style="padding:12px;background:var(--warning-bg);border-radius:10px;border-left:4px solid var(--warning);">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+            <div style="font-weight:600;font-size:14px;color:var(--warning);">Upcoming Test</div>
+            <div style="font-size:11px;color:var(--text-light);">May 8</div>
+          </div>
+          <div style="font-size:13px;color:var(--text);margin-bottom:4px;">Your Theory Test 2 is scheduled for May 10, 2026 at 2:00 PM in Room A.</div>
+          <div style="font-size:12px;color:var(--text-muted);">Please arrive 15 minutes early</div>
+        </div>
+      </div>
+
+      <div style="margin-top:20px;padding:16px;background:var(--bg);border-radius:12px;text-align:center;">
+        <div style="font-size:14px;font-weight:600;margin-bottom:8px;">Need Help?</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:12px;">Contact our support team for any questions</div>
+        <button class="btn btn-accent btn-sm">Send Message</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<script src="js/app.js"></script>
+<script>
+// Student-specific navigation titles
+const studentTitles = {
+  'dashboard': 'My Dashboard',
+  'schedule': 'My Schedule', 
+  'progress': 'My Progress',
+  'courses': 'My Course',
+  'tests': 'Tests & Results',
+  'payments': 'My Payments',
+  'messages': 'Messages'
+};
+
+// Student search functionality
+function performStudentSearch() {
+  const searchTerm = document.getElementById('studentSearch').value.toLowerCase().trim();
+  const currentSection = document.querySelector('.section.active').id;
+  
+  if (searchTerm === '') {
+    clearStudentSearch();
+    return;
+  }
+  
+  switch(currentSection) {
+    case 'schedule':
+      searchStudentSchedule(searchTerm);
+      break;
+    case 'messages':
+      searchStudentMessages(searchTerm);
+      break;
+    default:
+      searchStudentDashboard(searchTerm);
+  }
+}
+
+function clearStudentSearch() {
+  const scheduleItems = document.querySelectorAll('.schedule-item');
+  scheduleItems.forEach(item => item.style.display = '');
+  
+  const messageItems = document.querySelectorAll('.chat-item');
+  messageItems.forEach(item => item.style.display = '');
+}
+
+function searchStudentSchedule(searchTerm) {
+  const scheduleItems = document.querySelectorAll('.schedule-item');
+  let visibleCount = 0;
+  
+  scheduleItems.forEach(item => {
+    const name = item.querySelector('.schedule-name')?.textContent.toLowerCase() || '';
+    const detail = item.querySelector('.schedule-detail')?.textContent.toLowerCase() || '';
+    const time = item.querySelector('.schedule-time')?.textContent.toLowerCase() || '';
+    
+    if (name.includes(searchTerm) || detail.includes(searchTerm) || time.includes(searchTerm)) {
+      item.style.display = '';
+      visibleCount++;
+    } else {
+      item.style.display = 'none';
+    }
+  });
+  
+  showStudentSearchResults('schedule', visibleCount);
+}
+
+function searchStudentMessages(searchTerm) {
+  const messageItems = document.querySelectorAll('#messages .chat-item');
+  let visibleCount = 0;
+  
+  messageItems.forEach(item => {
+    const content = item.textContent.toLowerCase();
+    
+    if (content.includes(searchTerm)) {
+      item.style.display = '';
+      visibleCount++;
+    } else {
+      item.style.display = 'none';
+    }
+  });
+  
+  showStudentSearchResults('messages', visibleCount);
+}
+
+function searchStudentDashboard(searchTerm) {
+  const scheduleItems = document.querySelectorAll('#dashboard .schedule-item');
+  scheduleItems.forEach(item => {
+    const name = item.querySelector('.schedule-name')?.textContent.toLowerCase() || '';
+    const detail = item.querySelector('.schedule-detail')?.textContent.toLowerCase() || '';
+    
+    if (name.includes(searchTerm) || detail.includes(searchTerm)) {
+      item.style.display = '';
+    } else {
+      item.style.display = 'none';
+    }
+  });
+}
+
+function showStudentSearchResults(section, count) {
+  let indicator = document.getElementById('studentSearchIndicator');
+  if (!indicator) {
+    indicator = document.createElement('div');
+    indicator.id = 'studentSearchIndicator';
+    indicator.style.cssText = `
+      position: fixed;
+      top: 80px;
+      right: 24px;
+      background: var(--navy);
+      color: var(--white);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      z-index: 1000;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    `;
+    document.body.appendChild(indicator);
+  }
+  
+  indicator.textContent = `${count} result${count !== 1 ? 's' : ''} found`;
+  indicator.style.display = 'block';
+  
+  setTimeout(() => {
+    if (indicator) {
+      indicator.style.display = 'none';
+    }
+  }, 3000);
+}
+
+// Mobile sidebar functions
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('mobileOverlay');
+  
+  if (sidebar && overlay) {
+    sidebar.classList.toggle('open');
+    overlay.classList.toggle('open');
+    
+    // Prevent body scroll when sidebar is open
+    if (sidebar.classList.contains('open')) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+  }
+}
+
+function closeSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('mobileOverlay');
+  
+  if (sidebar && overlay) {
+    sidebar.classList.remove('open');
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+}
+
+// Close sidebar when clicking outside on mobile
+document.addEventListener('DOMContentLoaded', function() {
+  const overlay = document.getElementById('mobileOverlay');
+  if (overlay) {
+    overlay.addEventListener('click', closeSidebar);
+  }
+  
+  // Close sidebar on window resize if screen becomes large
+  window.addEventListener('resize', function() {
+    if (window.innerWidth > 768) {
+      closeSidebar();
+    }
+  });
+  
+  // Handle swipe gestures for mobile
+  let touchStartX = 0;
+  let touchEndX = 0;
+  
+  document.addEventListener('touchstart', function(e) {
+    touchStartX = e.changedTouches[0].screenX;
+  });
+  
+  document.addEventListener('touchend', function(e) {
+    touchEndX = e.changedTouches[0].screenX;
+    handleSwipe();
+  });
+  
+  function handleSwipe() {
+    const swipeThreshold = 50;
+    const sidebar = document.getElementById('sidebar');
+    
+    if (touchEndX < touchStartX - swipeThreshold) {
+      // Swipe left - close sidebar
+      if (sidebar && sidebar.classList.contains('open')) {
+        closeSidebar();
+      }
+    }
+    
+    if (touchEndX > touchStartX + swipeThreshold && touchStartX < 50) {
+      // Swipe right from left edge - open sidebar
+      if (sidebar && !sidebar.classList.contains('open') && window.innerWidth <= 768) {
+        toggleSidebar();
+      }
+    }
+  }
+});
+
+function clearStudentSearch() {
+  try {
+    // Show all schedule items
+    const scheduleItems = document.querySelectorAll('.schedule-item');
+    scheduleItems.forEach(item => {
+      if (item.style) item.style.display = '';
+    });
+    
+    // Show all message items
+    const messageItems = document.querySelectorAll('.chat-item, [style*="padding:12px;background:var(--"]');
+    messageItems.forEach(item => {
+      if (item.style) item.style.display = '';
+    });
+    
+    // Clear any search indicators
+    const indicator = document.getElementById('studentSearchIndicator');
+    if (indicator) {
+      indicator.style.display = 'none';
+    }
+  } catch (error) {
+    console.error('Clear search error:', error);
+  }
+}
+
+// Override navigation function for student portal
+function navigate(sectionId, navItem) {
+  try {
+    // Clear search first
+    const searchInput = document.getElementById('studentSearch');
+    if (searchInput) {
+      searchInput.value = '';
+      clearStudentSearch();
+    }
+    
+    // Hide all sections
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    
+    // Show target section
+    const targetSection = document.getElementById(sectionId);
+    if (targetSection) {
+      targetSection.classList.add('active');
+    } else {
+      console.warn(`Section with id '${sectionId}' not found`);
+      return;
+    }
+    
+    // Update nav items
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    if (navItem) {
+      navItem.classList.add('active');
+    }
+    
+    // Update topbar title
+    const topbarTitle = document.getElementById('topbarTitle');
+    if (topbarTitle) {
+      topbarTitle.textContent = studentTitles[sectionId] || 'Student Portal';
+    }
+    
+    closeSidebar();
+  } catch (error) {
+    console.error('Navigation error:', error);
+  }
+}
+
+// Topbar user menu functions
+function toggleTopbarUserMenu() {
+  const dropdown = document.getElementById('topbarUserDropdown');
+  const arrow = document.getElementById('topbarUserArrow');
+  dropdown.classList.toggle('open');
+  
+  if (dropdown.classList.contains('open')) {
+    arrow.style.transform = 'rotate(180deg)';
+  } else {
+    arrow.style.transform = 'rotate(0deg)';
+  }
+}
+
+// Student profile function
+function openProfile() {
+  // Create and open profile modal
+  const profileModal = document.createElement('div');
+  profileModal.className = 'modal-overlay';
+  profileModal.id = 'studentProfileModal';
+  profileModal.innerHTML = `
+    <div class="modal">
+      <div class="modal-title">My Profile</div>
+      <button class="modal-close" onclick="closeModal('studentProfileModal')">×</button>
+      <form onsubmit="updateStudentProfile(event)">
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input class="form-control" name="fullName" value="Amina Kamau" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input class="form-control" name="email" type="email" value="amina.kamau@email.com" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Phone Number</label>
+          <input class="form-control" name="phone" type="tel" value="+254 712 345 678" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Course</label>
+          <input class="form-control" name="course" value="Class B - Medium Vehicle" readonly style="background:var(--bg);">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Change Password</label>
+          <input class="form-control" name="newPassword" type="password" placeholder="Enter new password (optional)">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Confirm Password</label>
+          <input class="form-control" name="confirmPassword" type="password" placeholder="Confirm new password">
+        </div>
+        <div style="display:flex;gap:12px;margin-top:20px;">
+          <button type="button" class="btn btn-outline" style="flex:1;" onclick="closeModal('studentProfileModal')">Cancel</button>
+          <button type="submit" class="btn btn-accent" style="flex:1;">Update Profile</button>
+        </div>
+      </form>
+    </div>
+  `;
+  
+  document.body.appendChild(profileModal);
+  profileModal.classList.add('open');
+  
+  // Close topbar dropdown
+  const topbarDropdown = document.getElementById('topbarUserDropdown');
+  if (topbarDropdown) {
+    topbarDropdown.classList.remove('open');
+    const arrow = document.getElementById('topbarUserArrow');
+    if (arrow) arrow.style.transform = 'rotate(0deg)';
+  }
+  
+  // Close admin dropdown (legacy)
+  const adminDropdown = document.getElementById('adminDropdown');
+  if (adminDropdown) {
+    adminDropdown.classList.remove('open');
+    const arrow = document.getElementById('adminArrow');
+    if (arrow) arrow.style.transform = 'rotate(0deg)';
+  }
+}
+
+function updateStudentProfile(event) {
+  event.preventDefault();
+  const formData = new FormData(event.target);
+  const profileData = Object.fromEntries(formData);
+  
+  // Validate password confirmation if password is being changed
+  if (profileData.newPassword && profileData.newPassword !== profileData.confirmPassword) {
+    alert('Passwords do not match!');
+    return;
+  }
+  
+  // Update student name in topbar and sidebar if changed
+  if (profileData.fullName) {
+    // Update topbar user name
+    const topbarUserName = document.querySelector('.topbar-user-name');
+    if (topbarUserName) topbarUserName.textContent = profileData.fullName;
+    
+    // Update sidebar admin name (legacy)
+    const adminName = document.querySelector('.admin-name');
+    if (adminName) adminName.textContent = profileData.fullName;
+    
+    localStorage.setItem('studentName', profileData.fullName);
+  }
+  
+  alert('Profile updated successfully!');
+  closeModal('studentProfileModal');
+  
+  // Remove modal from DOM
+  setTimeout(() => {
+    const modal = document.getElementById('studentProfileModal');
+    if (modal) modal.remove();
+  }, 300);
+}
+
+// Student logout function
+function logout() {
+  // Create confirmation modal
+  const confirmModal = document.createElement('div');
+  confirmModal.className = 'modal-overlay';
+  confirmModal.id = 'logoutConfirmModal';
+  confirmModal.innerHTML = `
+    <div class="modal" style="max-width:400px;">
+      <div class="modal-title">Confirm Logout</div>
+      <div style="padding:20px 0;text-align:center;">
+        <svg width="48" height="48" fill="none" stroke="var(--warning)" stroke-width="2" viewBox="0 0 24 24" style="margin-bottom:16px;">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+          <polyline points="16 17 21 12 16 7"></polyline>
+          <line x1="21" y1="12" x2="9" y2="12"></line>
+        </svg>
+        <p style="font-size:16px;margin-bottom:8px;font-weight:600;">Are you sure you want to logout?</p>
+        <p style="font-size:14px;color:var(--text-muted);">You will be redirected to the login page.</p>
+      </div>
+      <div style="display:flex;gap:12px;">
+        <button type="button" class="btn btn-outline" style="flex:1;" onclick="cancelLogout()">Cancel</button>
+        <button type="button" class="btn btn-accent" style="flex:1;" onclick="confirmLogout()">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+          Logout
+        </button>
+      </div>
+    </div>
+  `;
+  
+  document.body.appendChild(confirmModal);
+  confirmModal.classList.add('open');
+  
+  // Close topbar dropdown
+  const topbarDropdown = document.getElementById('topbarUserDropdown');
+  if (topbarDropdown) {
+    topbarDropdown.classList.remove('open');
+    const arrow = document.getElementById('topbarUserArrow');
+    if (arrow) arrow.style.transform = 'rotate(0deg)';
+  }
+  
+  // Close admin dropdown (legacy)
+  const adminDropdown = document.getElementById('adminDropdown');
+  if (adminDropdown) {
+    adminDropdown.classList.remove('open');
+    const arrow = document.getElementById('adminArrow');
+    if (arrow) arrow.style.transform = 'rotate(0deg)';
+  }
+}
+
+function cancelLogout() {
+  const modal = document.getElementById('logoutConfirmModal');
+  if (modal) {
+    modal.classList.remove('open');
+    setTimeout(() => modal.remove(), 300);
+  }
+}
+
+function confirmLogout() {
+  // Show logout progress
+  const modal = document.getElementById('logoutConfirmModal');
+  if (modal) {
+    modal.querySelector('.modal').innerHTML = `
+      <div style="text-align:center;padding:40px;">
+        <div style="width:40px;height:40px;border:3px solid var(--accent-light);border-top:3px solid var(--accent);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 16px;"></div>
+        <p style="font-weight:600;margin-bottom:8px;">Logging out...</p>
+        <p style="font-size:14px;color:var(--text-muted);">Please wait</p>
+      </div>
+      <style>
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+      </style>
+    `;
+  }
+  
+  // Simulate logout process
+  setTimeout(() => {
+    // Clear user data
+    localStorage.removeItem('userType');
+    localStorage.removeItem('username');
+    localStorage.removeItem('studentName');
+    
+    // Redirect to login
+    window.location.href = 'login.html';
+  }, 1500);
+}
+
+// Modal functions for student portal
+function openModal(modalId) {
+  const modal = document.getElementById(modalId);
+  if (modal) {
+    modal.classList.add('open');
+  }
+}
+
+function closeModal(modalId) {
+  const modal = document.getElementById(modalId);
+  if (modal) {
+    modal.classList.remove('open');
+  }
+}
+
+// Admin dropdown functions for student portal
+function toggleAdminMenu() {
+  const dropdown = document.getElementById('adminDropdown');
+  const arrow = document.getElementById('adminArrow');
+  dropdown.classList.toggle('open');
+  
+  if (dropdown.classList.contains('open')) {
+    arrow.style.transform = 'rotate(180deg)';
+  } else {
+    arrow.style.transform = 'rotate(0deg)';
+  }
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', function(event) {
+  const topbarUserCard = document.getElementById('topbarUserCard');
+  const topbarDropdown = document.getElementById('topbarUserDropdown');
+  const adminCard = document.getElementById('adminCard');
+  const adminDropdown = document.getElementById('adminDropdown');
+  
+  // Close topbar user dropdown
+  if (topbarUserCard && !topbarUserCard.contains(event.target)) {
+    if (topbarDropdown) {
+      topbarDropdown.classList.remove('open');
+      const arrow = document.getElementById('topbarUserArrow');
+      if (arrow) arrow.style.transform = 'rotate(0deg)';
+    }
+  }
+  
+  // Close admin dropdown (legacy)
+  if (adminCard && !adminCard.contains(event.target)) {
+    if (adminDropdown) {
+      adminDropdown.classList.remove('open');
+      const arrow = document.getElementById('adminArrow');
+      if (arrow) arrow.style.transform = 'rotate(0deg)';
+    }
+  }
+});
+
+// Student course materials functionality
+function loadStudentCourseMaterials() {
+  // Get student's enrolled course (Class B for demo)
+  const studentCourse = 'class-b';
+  const moduleData = JSON.parse(localStorage.getItem('courseModules') || '{}');
+  const courseMaterials = moduleData[studentCourse] || { documents: [], videos: [] };
+  
+  const materialsContainer = document.getElementById('studentCourseMaterials');
+  const noMaterialsMessage = document.getElementById('noMaterialsMessage');
+  
+  if (!materialsContainer) return;
+  
+  materialsContainer.innerHTML = '';
+  
+  const allMaterials = [...courseMaterials.documents, ...courseMaterials.videos];
+  
+  if (allMaterials.length === 0) {
+    noMaterialsMessage.style.display = 'block';
+    return;
+  }
+  
+  noMaterialsMessage.style.display = 'none';
+  
+  // Display documents
+  courseMaterials.documents.forEach(doc => {
+    const docElement = document.createElement('div');
+    docElement.style.cssText = 'display:flex;align-items:center;gap:12px;padding:12px;background:var(--bg);border-radius:10px;';
+    docElement.innerHTML = `
+      <svg width="20" height="20" fill="none" stroke="var(--info)" stroke-width="2" viewBox="0 0 24 24">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+        <polyline points="14 2 14 8 20 8"/>
+      </svg>
+      <div style="flex:1;">
+        <div style="font-weight:600;font-size:14px;">${doc.name}</div>
+        <div style="font-size:12px;color:var(--text-muted);">PDF • ${doc.size}</div>
+        ${doc.description ? `<div style="font-size:11px;color:var(--text-light);margin-top:2px;">${doc.description}</div>` : ''}
+      </div>
+      <button class="btn btn-outline btn-sm" onclick="viewStudentDocument('${doc.id}', '${doc.name}')">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+          <circle cx="12" cy="12" r="3"/>
+        </svg>
+        View
+      </button>
+    `;
+    materialsContainer.appendChild(docElement);
+  });
+  
+  // Display videos
+  courseMaterials.videos.forEach(video => {
+    const videoElement = document.createElement('div');
+    videoElement.style.cssText = 'display:flex;align-items:center;gap:12px;padding:12px;background:var(--bg);border-radius:10px;';
+    videoElement.innerHTML = `
+      <svg width="20" height="20" fill="none" stroke="var(--success)" stroke-width="2" viewBox="0 0 24 24">
+        <polygon points="23 7 16 12 23 17 23 7"/>
+        <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+      </svg>
+      <div style="flex:1;">
+        <div style="font-weight:600;font-size:14px;">${video.name}</div>
+        <div style="font-size:12px;color:var(--text-muted);">Video • ${video.duration} • ${video.size}</div>
+        ${video.description ? `<div style="font-size:11px;color:var(--text-light);margin-top:2px;">${video.description}</div>` : ''}
+      </div>
+      <button class="btn btn-outline btn-sm" onclick="watchStudentVideo('${video.id}', '${video.name}')">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <polygon points="5 3 19 12 5 21 5 3"/>
+        </svg>
+        Watch
+      </button>
+    `;
+    materialsContainer.appendChild(videoElement);
+  });
+}
+
+function viewStudentDocument(docId, docName) {
+  // Create document viewer modal
+  const docModal = document.createElement('div');
+  docModal.className = 'modal-overlay';
+  docModal.id = 'studentDocModal';
+  docModal.innerHTML = `
+    <div class="modal" style="max-width:900px;max-height:90vh;">
+      <div class="modal-title">📄 ${docName}</div>
+      <button class="modal-close" onclick="closeStudentDocModal()">×</button>
+      
+      <div style="background:#f8f9fa;border-radius:10px;margin:20px 0;padding:40px;text-align:center;min-height:400px;display:flex;flex-direction:column;justify-content:center;align-items:center;">
+        <svg width="80" height="80" fill="none" stroke="var(--info)" stroke-width="1" viewBox="0 0 24 24" style="margin-bottom:20px;opacity:0.7;">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+        </svg>
+        <div style="font-size:18px;font-weight:600;margin-bottom:12px;color:var(--info);">Document Viewer</div>
+        <div style="font-size:14px;color:var(--text-muted);margin-bottom:20px;max-width:400px;line-height:1.5;">
+          ${docName}
+        </div>
+        <div style="font-size:12px;color:var(--text-light);margin-bottom:24px;">
+          In a real application, the document content would be displayed here using a PDF viewer or document renderer.
+        </div>
+        <div style="display:flex;gap:12px;">
+          <button class="btn btn-primary" onclick="downloadStudentDocument('${docId}', '${docName}')">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            Download
+          </button>
+          <button class="btn btn-outline" onclick="printStudentDocument('${docName}')">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <polyline points="6 9 6 2 18 2 18 9"/>
+              <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+              <rect x="6" y="14" width="12" height="8"/>
+            </svg>
+            Print
+          </button>
+        </div>
+      </div>
+      
+      <div style="display:flex;justify-content:center;gap:12px;margin-top:20px;">
+        <button class="btn btn-outline" onclick="closeStudentDocModal()">Close</button>
+      </div>
+    </div>
+  `;
+  
+  document.body.appendChild(docModal);
+  docModal.classList.add('open');
+}
+
+function watchStudentVideo(videoId, videoName) {
+  // Create video player modal
+  const videoModal = document.createElement('div');
+  videoModal.className = 'modal-overlay';
+  videoModal.id = 'studentVideoModal';
+  videoModal.innerHTML = `
+    <div class="modal" style="max-width:900px;max-height:90vh;">
+      <div class="modal-title">🎥 ${videoName}</div>
+      <button class="modal-close" onclick="closeStudentVideoModal()">×</button>
+      
+      <div style="background:#000;border-radius:10px;margin:20px 0;position:relative;padding-bottom:56.25%;height:0;">
+        <div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:white;">
+          <div style="text-align:center;">
+            <svg width="80" height="80" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24" style="margin-bottom:20px;opacity:0.7;">
+              <polygon points="5 3 19 12 5 21 5 3"/>
+            </svg>
+            <div style="font-size:18px;font-weight:600;margin-bottom:8px;">Video Player</div>
+            <div style="font-size:14px;opacity:0.8;margin-bottom:20px;">${videoName}</div>
+            <div style="font-size:12px;opacity:0.6;margin-bottom:20px;">In a real application, the video would play here</div>
+            <div style="display:flex;gap:12px;justify-content:center;">
+              <button class="btn btn-primary" onclick="simulateStudentVideoAction('play', '${videoName}')" style="background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.3);">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <polygon points="5 3 19 12 5 21 5 3"/>
+                </svg>
+                Play
+              </button>
+              <button class="btn btn-outline" onclick="simulateStudentVideoAction('pause', '${videoName}')" style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.3);color:white;">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <rect x="6" y="4" width="4" height="16"/>
+                  <rect x="14" y="4" width="4" height="16"/>
+                </svg>
+                Pause
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div style="display:flex;justify-content:center;gap:12px;margin-top:20px;">
+        <button class="btn btn-outline" onclick="closeStudentVideoModal()">Close</button>
+      </div>
+    </div>
+  `;
+  
+  document.body.appendChild(videoModal);
+  videoModal.classList.add('open');
+}
+
+function closeStudentDocModal() {
+  const modal = document.getElementById('studentDocModal');
+  if (modal) {
+    modal.classList.remove('open');
+    setTimeout(() => modal.remove(), 300);
+  }
+}
+
+function closeStudentVideoModal() {
+  const modal = document.getElementById('studentVideoModal');
+  if (modal) {
+    modal.classList.remove('open');
+    setTimeout(() => modal.remove(), 300);
+  }
+}
+
+function downloadStudentDocument(docId, docName) {
+  // Show download progress
+  const notification = document.createElement('div');
+  notification.style.cssText = `
+    position: fixed;
+    top: 80px;
+    right: 24px;
+    background: var(--info);
+    color: white;
+    padding: 16px 20px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    z-index: 1001;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    max-width: 300px;
+  `;
+  
+  notification.innerHTML = `
+    <div style="width:16px;height:16px;border:2px solid rgba(255,255,255,0.3);border-top:2px solid white;border-radius:50%;animation:spin 1s linear infinite;"></div>
+    <div>
+      <div>Downloading...</div>
+      <div style="font-size:12px;opacity:0.9;">${docName}</div>
+    </div>
+    <style>
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    </style>
+  `;
+  
+  document.body.appendChild(notification);
+  
+  // Simulate download
+  setTimeout(() => {
+    // Create dummy download
+    const link = document.createElement('a');
+    link.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(`GLOTECH - **Immacurate Driving School**\n\nCourse Material: ${docName}\n\nThis is a demo document for the student portal.\nIn a real application, this would be the actual course material content.\n\nFor more information, contact:\nPhone: +254 700 000 000\nEmail: info@glotech.co.ke`);
+    link.download = docName;
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    // Update notification
+    notification.style.background = 'var(--success)';
+    notification.innerHTML = `
+      <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <polyline points="20 6 9 17 4 12"/>
+      </svg>
+      <div>
+        <div>Download completed!</div>
+        <div style="font-size:12px;opacity:0.9;">${docName}</div>
+      </div>
+    `;
+    
+    setTimeout(() => {
+      notification.style.transform = 'translateX(100%)';
+      setTimeout(() => notification.remove(), 300);
+    }, 3000);
+  }, 1500);
+}
+
+function printStudentDocument(docName) {
+  // Create print window
+  const printWindow = window.open('', '_blank', 'width=800,height=600');
+  const printHTML = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>${docName} - GLOTECH</title>
+      <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .header { text-align: center; margin-bottom: 40px; border-bottom: 2px solid #0D1B3E; padding-bottom: 20px; }
+        .logo { font-size: 24px; font-weight: bold; color: #0D1B3E; }
+        .subtitle { font-size: 14px; color: #6B7A99; }
+        .content { margin: 30px 0; line-height: 1.6; }
+        @media print { .no-print { display: none; } }
+      </style>
+    </head>
+    <body>
+      <div class="header">
+        <div class="logo">GLOTECH - **Immacurate Driving School**</div>
+        <div class="subtitle">Course Material</div>
+      </div>
+      <div class="content">
+        <h2>${docName}</h2>
+        <p>This is a demo document for the student portal.</p>
+        <p>In a real application, this would contain the actual course material content including:</p>
+        <ul>
+          <li>Traffic rules and regulations</li>
+          <li>Road signs and their meanings</li>
+          <li>Driving techniques and best practices</li>
+          <li>Safety guidelines and procedures</li>
+        </ul>
+        <p>For more information, contact GLOTECH at +254 700 000 000 or info@glotech.co.ke</p>
+      </div>
+      <div class="no-print" style="text-align: center; margin-top: 40px;">
+        <button onclick="window.print()" style="background: #0D1B3E; color: white; padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer;">Print Document</button>
+      </div>
+    </body>
+    </html>
+  `;
+  
+  printWindow.document.write(printHTML);
+  printWindow.document.close();
+  
+  setTimeout(() => {
+    printWindow.print();
+  }, 500);
+}
+
+function simulateStudentVideoAction(action, videoName) {
+  const actionText = action === 'play' ? 'Playing' : 'Paused';
+  const notification = document.createElement('div');
+  notification.style.cssText = `
+    position: fixed;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.8);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    z-index: 1002;
+  `;
+  notification.textContent = `${actionText}: ${videoName}`;
+  document.body.appendChild(notification);
+  
+  setTimeout(() => notification.remove(), 2000);
+}
+
+// Check if user is logged in as student
+document.addEventListener('DOMContentLoaded', function() {
+  const userType = localStorage.getItem('userType');
+  const username = localStorage.getItem('username');
+  const studentName = localStorage.getItem('studentName');
+  
+  if (userType !== 'student') {
+    window.location.href = 'login.html';
+    return;
+  }
+  
+  // Update student name if available
+  if (studentName) {
+    // Update topbar user name
+    const topbarUserName = document.querySelector('.topbar-user-name');
+    if (topbarUserName) topbarUserName.textContent = studentName;
+    
+    // Update sidebar admin name (legacy)
+    const adminName = document.querySelector('.admin-name');
+    if (adminName) adminName.textContent = studentName;
+  } else if (username && username !== 'Demo Student') {
+    // Update topbar user name
+    const topbarUserName = document.querySelector('.topbar-user-name');
+    if (topbarUserName) topbarUserName.textContent = username;
+    
+    // Update sidebar admin name (legacy)
+    const adminName = document.querySelector('.admin-name');
+    if (adminName) adminName.textContent = username;
+  }
+  
+  // Load course materials for the student
+  loadStudentCourseMaterials();
+});
+</script>
+
+</body>
+</html>

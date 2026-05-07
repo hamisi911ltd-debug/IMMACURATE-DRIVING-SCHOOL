@@ -1,0 +1,250 @@
+<!-- MODALS -->
+<!-- Add Student Modal -->
+<div class="modal-overlay" id="addStudentModal">
+  <div class="modal">
+    <div class="modal-title">Add New Student</div>
+    <button class="modal-close" onclick="closeModal('addStudentModal')">×</button>
+    <form onsubmit="addStudent(event)">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">First Name</label>
+          <input class="form-control" name="firstName" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Last Name</label>
+          <input class="form-control" name="lastName" required>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Phone Number</label>
+          <input class="form-control" name="phone" type="tel" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input class="form-control" name="email" type="email">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Course</label>
+        <select class="form-control" name="course" required>
+          <option value="">Select Course</option>
+          <option value="class-a">Class A - KES 9,200</option>
+          <option value="class-b">Class B - KES 14,300</option>
+          <option value="class-c">Class C - KES 15,300</option>
+          <option value="class-d">Class D - KES 10,600</option>
+          <option value="class-b-half">Class B Half - KES 10,400</option>
+          <option value="class-c-half">Class C Half - KES 10,600</option>
+          <option value="class-ce">Class CE - KES 36,600</option>
+        </select>
+      </div>
+      <div style="display:flex;gap:12px;margin-top:20px;">
+        <button type="button" class="btn btn-outline" style="flex:1;" onclick="closeModal('addStudentModal')">Cancel</button>
+        <button type="submit" class="btn btn-accent" style="flex:1;">Add Student</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Add Course Modal -->
+<div class="modal-overlay" id="addCourseModal">
+  <div class="modal">
+    <div class="modal-title">Create New Course</div>
+    <button class="modal-close" onclick="closeModal('addCourseModal')">×</button>
+    <form onsubmit="addCourse(event)">
+      <div class="form-group">
+        <label class="form-label">Course Name</label>
+        <input class="form-control" name="courseName" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Description</label>
+        <textarea class="form-control" name="description" rows="3"></textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Price (KES)</label>
+          <input class="form-control" name="price" type="number" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Duration (weeks)</label>
+          <input class="form-control" name="duration" type="number" required>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Total Lessons</label>
+          <input class="form-control" name="lessons" type="number" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Course Icon</label>
+          <input class="form-control" name="icon" placeholder="🚗">
+        </div>
+      </div>
+      <div style="display:flex;gap:12px;margin-top:20px;">
+        <button type="button" class="btn btn-outline" style="flex:1;" onclick="closeModal('addCourseModal')">Cancel</button>
+        <button type="submit" class="btn btn-accent" style="flex:1;">Create Course</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Schedule Lesson Modal -->
+<div class="modal-overlay" id="addLessonModal">
+  <div class="modal">
+    <div class="modal-title">Schedule New Lesson</div>
+    <button class="modal-close" onclick="closeModal('addLessonModal')">×</button>
+    <form onsubmit="scheduleLesson(event)">
+      <div class="form-group">
+        <label class="form-label">Student</label>
+        <select class="form-control" name="student" required>
+          <option value="">Select Student</option>
+          <option value="amina-kamau">Amina Kamau</option>
+          <option value="brian-njoroge">Brian Njoroge</option>
+          <option value="cynthia-muthoni">Cynthia Muthoni</option>
+          <option value="dennis-waweru">Dennis Waweru</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Date</label>
+          <input class="form-control" name="date" type="date" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Time</label>
+          <input class="form-control" name="time" type="time" required>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Instructor</label>
+          <select class="form-control" name="instructor" required>
+            <option value="">Select Instructor</option>
+            <option value="peter-otieno">Peter Otieno</option>
+            <option value="sarah-njeri">Sarah Njeri</option>
+            <option value="john-kamau">John Kamau</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Vehicle</label>
+          <select class="form-control" name="vehicle" required>
+            <option value="">Select Vehicle</option>
+            <option value="kbz-123a">KBZ 123A - Toyota Vitz</option>
+            <option value="kcf-456b">KCF 456B - Honda Fit</option>
+            <option value="kde-789c">KDE 789C - Nissan Note</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Lesson Type</label>
+        <select class="form-control" name="lessonType" required>
+          <option value="">Select Type</option>
+          <option value="practical">Practical Lesson</option>
+          <option value="theory">Theory Class</option>
+          <option value="mock-test">Mock Test</option>
+        </select>
+      </div>
+      <div style="display:flex;gap:12px;margin-top:20px;">
+        <button type="button" class="btn btn-outline" style="flex:1;" onclick="closeModal('addLessonModal')">Cancel</button>
+        <button type="submit" class="btn btn-accent" style="flex:1;">Schedule Lesson</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Record Payment Modal -->
+<div class="modal-overlay" id="recordPaymentModal">
+  <div class="modal">
+    <div class="modal-title">Record Payment</div>
+    <button class="modal-close" onclick="closeModal('recordPaymentModal')">×</button>
+    <form onsubmit="recordPayment(event)">
+      <div class="form-group">
+        <label class="form-label">Student</label>
+        <select class="form-control" name="student" required>
+          <option value="">Select Student</option>
+          <option value="amina-kamau">Amina Kamau</option>
+          <option value="brian-njoroge">Brian Njoroge</option>
+          <option value="dennis-waweru">Dennis Waweru</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Amount (KES)</label>
+          <input class="form-control" name="amount" type="number" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Payment Method</label>
+          <select class="form-control" name="method" required>
+            <option value="">Select Method</option>
+            <option value="mpesa">M-Pesa</option>
+            <option value="bank">Bank Transfer</option>
+            <option value="cash">Cash</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Reference Number</label>
+        <input class="form-control" name="reference" placeholder="Transaction ID or Receipt Number">
+      </div>
+      <div style="display:flex;gap:12px;margin-top:20px;">
+        <button type="button" class="btn btn-outline" style="flex:1;" onclick="closeModal('recordPaymentModal')">Cancel</button>
+        <button type="submit" class="btn btn-accent" style="flex:1;">Record Payment</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Broadcast Modal -->
+<div class="modal-overlay" id="broadcastModal">
+  <div class="modal">
+    <div class="modal-title">Send Broadcast Message</div>
+    <button class="modal-close" onclick="closeModal('broadcastModal')">×</button>
+    <form onsubmit="sendBroadcast(event)">
+      <div class="form-group">
+        <label class="form-label">Recipients</label>
+        <select class="form-control" name="recipients" required>
+          <option value="">Select Recipients</option>
+          <option value="all">All Students</option>
+          <option value="active">Active Students Only</option>
+          <option value="pending">Pending Payments</option>
+          <option value="overdue">Overdue Students</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Message</label>
+        <textarea class="form-control" name="message" rows="4" placeholder="Type your message here..." required></textarea>
+      </div>
+      <div style="display:flex;gap:12px;margin-top:20px;">
+        <button type="button" class="btn btn-outline" style="flex:1;" onclick="closeModal('broadcastModal')">Cancel</button>
+        <button type="submit" class="btn btn-accent" style="flex:1;">Send Broadcast</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- New Message Modal -->
+<div class="modal-overlay" id="newMessageModal">
+  <div class="modal">
+    <div class="modal-title">New Message</div>
+    <button class="modal-close" onclick="closeModal('newMessageModal')">×</button>
+    <form onsubmit="sendNewMessage(event)">
+      <div class="form-group">
+        <label class="form-label">To</label>
+        <select class="form-control" name="recipient" required>
+          <option value="">Select Student</option>
+          <option value="amina-kamau">Amina Kamau</option>
+          <option value="brian-njoroge">Brian Njoroge</option>
+          <option value="cynthia-muthoni">Cynthia Muthoni</option>
+          <option value="dennis-waweru">Dennis Waweru</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Message</label>
+        <textarea class="form-control" name="message" rows="4" placeholder="Type your message here..." required></textarea>
+      </div>
+      <div style="display:flex;gap:12px;margin-top:20px;">
+        <button type="button" class="btn btn-outline" style="flex:1;" onclick="closeModal('newMessageModal')">Cancel</button>
+        <button type="submit" class="btn btn-accent" style="flex:1;">Send Message</button>
+      </div>
+    </form>
+  </div>
+</div>

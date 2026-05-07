@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Courses - Immacurate Driving School</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+
+<!-- Include Sidebar -->
+<div id="sidebar-container"></div>
+
+<!-- Include Topbar -->
+<div id="topbar-container"></div>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+  <!-- COURSES -->
+  <section class="section active" id="courses">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+      <div style="font-size:14px;color:var(--text-muted);">6 courses offered · 248 total enrollments</div>
+      <button class="btn btn-accent" onclick="openModal('addCourseModal')">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        New Course
+      </button>
+    </div>
+    <div class="courses-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+      <div class="course-card">
+        <div class="course-banner" style="background:#EFF6FF;font-size:24px;font-weight:bold;color:#1D4ED8;">A</div>
+        <div class="course-body">
+          <div class="course-title">Class A — Light Vehicle</div>
+          <div class="course-desc">Basic driving course for light vehicles including theory and practical sessions.</div>
+          <div class="course-meta"><span>Tuition: KES 7,500</span><span>PDL: KES 650</span><span>Test: KES 1,050</span></div>
+        </div>
+        <div class="course-footer">
+          <div class="course-price">KES 9,200</div>
+          <div style="display:flex;gap:8px;">
+            <span class="badge success">Active</span>
+            <button class="btn btn-outline btn-sm" onclick="editCourse('class-a')">Edit</button>
+            <button class="btn btn-accent btn-sm" onclick="manageCourseModules('class-a')">Modules</button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="course-card">
+        <div class="course-banner" style="background:#F0FDF4;font-size:24px;font-weight:bold;color:#15803D;">B</div>
+        <div class="course-body">
+          <div class="course-title">Class B — Medium Vehicle</div>
+          <div class="course-desc">Comprehensive driving course for medium vehicles with full training program.</div>
+          <div class="course-meta"><span>Tuition: KES 12,600</span><span>PDL: KES 650</span><span>Test: KES 1,050</span></div>
+        </div>
+        <div class="course-footer">
+          <div class="course-price">KES 14,300</div>
+          <div style="display:flex;gap:8px;">
+            <span class="badge success">Active</span>
+            <button class="btn btn-outline btn-sm" onclick="editCourse('class-b')">Edit</button>
+            <button class="btn btn-accent btn-sm" onclick="manageCourseModules('class-b')">Modules</button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="course-card">
+        <div class="course-banner" style="background:#FFF7ED;font-size:24px;font-weight:bold;color:#C2410C;">D</div>
+        <div class="course-body">
+          <div class="course-title">Defensive Driving</div>
+          <div class="course-desc">Advanced defensive driving techniques and safety protocols for experienced drivers.</div>
+          <div class="course-meta"><span>Duration: 5 Days</span><span>Certificate: Yes</span></div>
+        </div>
+        <div class="course-footer">
+          <div class="course-price">KES 8,500</div>
+          <div style="display:flex;gap:8px;">
+            <span class="badge success">Active</span>
+            <button class="btn btn-outline btn-sm" onclick="editCourse('defensive')">Edit</button>
+            <button class="btn btn-accent btn-sm" onclick="manageCourseModules('defensive')">Modules</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="../js/app.js"></script>
+<script>
+// Load sidebar and topbar
+document.addEventListener('DOMContentLoaded', function() {
+  loadComponent('sidebar-container', '../components/sidebar.html');
+  loadComponent('topbar-container', '../components/topbar.html');
+});
+
+function loadComponent(containerId, componentPath) {
+  fetch(componentPath)
+    .then(response => response.text())
+    .then(html => {
+      document.getElementById(containerId).innerHTML = html;
+    });
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Schedule - Immacurate Driving School</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+
+<!-- Include Sidebar -->
+<div id="sidebar-container"></div>
+
+<!-- Include Topbar -->
+<div id="topbar-container"></div>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+  <!-- SCHEDULE -->
+  <section class="section active" id="schedule">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-outline btn-sm" onclick="filterSchedule('all',this)" style="background:var(--navy);color:var(--white);border-color:var(--navy);">All</button>
+        <button class="btn btn-outline btn-sm" onclick="filterSchedule('today',this)">Today</button>
+        <button class="btn btn-outline btn-sm" onclick="filterSchedule('week',this)">This Week</button>
+        <button class="btn btn-outline btn-sm" onclick="filterSchedule('month',this)">This Month</button>
+      </div>
+      <button class="btn btn-accent" onclick="openModal('addLessonModal')">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Schedule Lesson
+      </button>
+    </div>
+    
+    <div class="row-grid">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Today's Schedule</div>
+          <span class="card-link">View Calendar →</span>
+        </div>
+        <div class="schedule-list">
+          <div class="schedule-item">
+            <div class="schedule-time">09:00</div>
+            <div class="schedule-dot blue"></div>
+            <div class="schedule-info">
+              <div class="schedule-name">Amina Kamau - Practical Lesson</div>
+              <div class="schedule-detail">Class B • Instructor: John Mwangi • Route: City Center</div>
+            </div>
+          </div>
+          <div class="schedule-item">
+            <div class="schedule-time">11:30</div>
+            <div class="schedule-dot"></div>
+            <div class="schedule-info">
+              <div class="schedule-name">Brian Njoroge - Theory Class</div>
+              <div class="schedule-detail">Class A • Room 2 • Highway Code Review</div>
+            </div>
+          </div>
+          <div class="schedule-item">
+            <div class="schedule-time">14:00</div>
+            <div class="schedule-dot green"></div>
+            <div class="schedule-info">
+              <div class="schedule-name">Cynthia Muthoni - Final Test</div>
+              <div class="schedule-detail">Defensive Driving • Test Center • Duration: 2hrs</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Instructor Availability</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--success-bg);border-radius:8px;">
+            <div class="avatar" style="background:var(--success);color:white;">JM</div>
+            <div style="flex:1;">
+              <div style="font-weight:600;font-size:13px;">John Mwangi</div>
+              <div style="font-size:11px;color:var(--text-muted);">Available • Next: 16:00</div>
+            </div>
+            <span class="badge success">Online</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--warning-bg);border-radius:8px;">
+            <div class="avatar" style="background:var(--warning);color:white;">SK</div>
+            <div style="flex:1;">
+              <div style="font-weight:600;font-size:13px;">Sarah Kiprotich</div>
+              <div style="font-size:11px;color:var(--text-muted);">Busy • Available: 15:30</div>
+            </div>
+            <span class="badge warning">Busy</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="../js/app.js"></script>
+<script>
+// Load sidebar and topbar
+document.addEventListener('DOMContentLoaded', function() {
+  loadComponent('sidebar-container', '../components/sidebar.html');
+  loadComponent('topbar-container', '../components/topbar.html');
+});
+
+function loadComponent(containerId, componentPath) {
+  fetch(componentPath)
+    .then(response => response.text())
+    .then(html => {
+      document.getElementById(containerId).innerHTML = html;
+    });
+}
+</script>
+
+</body>
+</html>

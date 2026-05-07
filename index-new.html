@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DriveAcademy Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- Mobile Overlay -->
+<div class="mobile-overlay" id="mobileOverlay" onclick="closeSidebar()"></div>
+
+<!-- Include Sidebar -->
+<div id="sidebar-container"></div>
+
+<!-- Include Topbar -->
+<div id="topbar-container"></div>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+  <!-- Include Dashboard -->
+  <div id="dashboard-container"></div>
+  
+  <!-- Other sections will be loaded here -->
+  <div id="content-container"></div>
+</main>
+
+<!-- Include Modals -->
+<div id="modals-container"></div>
+
+<script src="js/app.js"></script>
+<script>
+// Load components
+async function loadComponent(url, containerId) {
+  try {
+    const response = await fetch(url);
+    const html = await response.text();
+    document.getElementById(containerId).innerHTML = html;
+  } catch (error) {
+    console.error('Error loading component:', error);
+  }
+}
+
+// Load all components on page load
+document.addEventListener('DOMContentLoaded', async function() {
+  await loadComponent('components/sidebar.html', 'sidebar-container');
+  await loadComponent('components/topbar.html', 'topbar-container');
+  await loadComponent('pages/dashboard.html', 'dashboard-container');
+  await loadComponent('components/modals.html', 'modals-container');
+});
+</script>
+
+</body>
+</html>

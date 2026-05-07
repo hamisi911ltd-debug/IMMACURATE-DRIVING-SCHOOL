@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Messages - Immacurate Driving School</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+
+<!-- Include Sidebar -->
+<div id="sidebar-container"></div>
+
+<!-- Include Topbar -->
+<div id="topbar-container"></div>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+  <!-- MESSAGES -->
+  <section class="section active" id="communication">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+      <div style="font-size:14px;color:var(--text-muted);">3 unread messages</div>
+      <button class="btn btn-accent" onclick="composeMessage()">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Compose Message
+      </button>
+    </div>
+    
+    <div class="row-grid">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Messages</div>
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-outline btn-sm" onclick="filterMessages('all',this)" style="background:var(--navy);color:var(--white);border-color:var(--navy);">All</button>
+            <button class="btn btn-outline btn-sm" onclick="filterMessages('unread',this)">Unread</button>
+            <button class="btn btn-outline btn-sm" onclick="filterMessages('sent',this)">Sent</button>
+          </div>
+        </div>
+        <div class="chat-list">
+          <div class="chat-item active">
+            <div class="chat-unread"></div>
+            <div class="avatar" style="background:#DBEAFE;color:#1D4ED8;">AK</div>
+            <div class="chat-meta">
+              <div class="chat-name">Amina Kamau</div>
+              <div class="chat-preview">Thank you for the lesson today. When is my next...</div>
+            </div>
+            <div class="chat-time">2m ago</div>
+          </div>
+          <div class="chat-item">
+            <div class="chat-unread"></div>
+            <div class="avatar" style="background:#F0FDF4;color:#15803D;">BN</div>
+            <div class="chat-meta">
+              <div class="chat-name">Brian Njoroge</div>
+              <div class="chat-preview">I need to reschedule my lesson for tomorrow...</div>
+            </div>
+            <div class="chat-time">1h ago</div>
+          </div>
+          <div class="chat-item">
+            <div class="avatar" style="background:#FFF7ED;color:#C2410C;">CM</div>
+            <div class="chat-meta">
+              <div class="chat-name">Cynthia Muthoni</div>
+              <div class="chat-preview">Great! I passed my test. Thank you so much...</div>
+            </div>
+            <div class="chat-time">3h ago</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Conversation with Amina Kamau</div>
+        </div>
+        <div class="messages-area">
+          <div class="msg recv">
+            <div class="msg-bubble">Thank you for the lesson today. When is my next practical session scheduled?</div>
+            <div class="msg-time">2 minutes ago</div>
+          </div>
+          <div class="msg sent">
+            <div class="msg-bubble">Hi Amina! Your next practical lesson is scheduled for Thursday at 10:00 AM. Please be ready 15 minutes early.</div>
+            <div class="msg-time">Just now</div>
+          </div>
+        </div>
+        <div class="chat-input-row">
+          <input class="chat-input" placeholder="Type your message..." onkeypress="handleMessageSend(event)">
+          <button class="btn btn-accent btn-icon" onclick="sendMessage()">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="../js/app.js"></script>
+<script>
+// Load sidebar and topbar
+document.addEventListener('DOMContentLoaded', function() {
+  loadComponent('sidebar-container', '../components/sidebar.html');
+  loadComponent('topbar-container', '../components/topbar.html');
+});
+
+function loadComponent(containerId, componentPath) {
+  fetch(componentPath)
+    .then(response => response.text())
+    .then(html => {
+      document.getElementById(containerId).innerHTML = html;
+    });
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>GLOTECH - Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0D1B3E;
+  --navy-mid: #1A2F5C;
+  --accent: #F4A124;
+  --accent-light: #FFF3DC;
+  --white: #FFFFFF;
+  --bg: #F0F4FA;
+  --text: #0D1B3E;
+  --text-muted: #6B7A99;
+  --border: rgba(13,27,62,0.1);
+  --success: #1DBF73;
+  --danger: #E84545;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+body { 
+  font-family:'Plus Jakarta Sans',sans-serif; 
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+  min-height:100vh; 
+  display:flex; 
+  align-items:center; 
+  justify-content:center;
+  color:var(--text);
+}
+
+.login-container {
+  background:var(--white);
+  border-radius:20px;
+  padding:40px;
+  width:100%;
+  max-width:420px;
+  box-shadow:0 20px 40px rgba(0,0,0,0.1);
+}
+
+.logo-section {
+  text-align:center;
+  margin-bottom:32px;
+}
+
+.logo-icon {
+  width:60px;
+  height:60px;
+  margin:0 auto 16px;
+  background:transparent;
+  border-radius:16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.logo-icon img {
+  width:50px;
+  height:50px;
+  object-fit:contain;
+}
+
+.logo-text {
+  font-size:28px;
+  font-weight:700;
+  color:var(--navy);
+  margin-bottom:4px;
+}
+
+.logo-sub {
+  font-size:14px;
+  color:var(--text-muted);
+}
+
+.login-title {
+  font-size:24px;
+  font-weight:700;
+  color:var(--navy);
+  text-align:center;
+  margin-bottom:8px;
+}
+
+.login-subtitle {
+  font-size:14px;
+  color:var(--text-muted);
+  text-align:center;
+  margin-bottom:32px;
+}
+
+.form-group {
+  margin-bottom:20px;
+}
+
+.form-label {
+  font-size:14px;
+  font-weight:600;
+  color:var(--text);
+  margin-bottom:8px;
+  display:block;
+}
+
+.form-control {
+  width:100%;
+  padding:14px 16px;
+  border:2px solid var(--border);
+  border-radius:12px;
+  font-size:16px;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  color:var(--text);
+  background:var(--white);
+  outline:none;
+  transition:border 0.2s;
+}
+
+.form-control:focus {
+  border-color:var(--accent);
+}
+
+.login-options {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:24px;
+  font-size:14px;
+}
+
+.remember-me {
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.forgot-password {
+  color:var(--accent);
+  text-decoration:none;
+  font-weight:500;
+}
+
+.forgot-password:hover {
+  text-decoration:underline;
+}
+
+.btn {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:14px 24px;
+  border-radius:12px;
+  font-size:16px;
+  font-weight:600;
+  cursor:pointer;
+  border:none;
+  transition:all 0.2s;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  width:100%;
+}
+
+.btn-primary {
+  background:var(--navy);
+  color:var(--white);
+}
+
+.btn-primary:hover {
+  background:var(--navy-mid);
+  transform:translateY(-1px);
+}
+
+.btn-accent {
+  background:var(--accent);
+  color:var(--navy);
+  margin-top:12px;
+}
+
+.btn-accent:hover {
+  background:#E6941F;
+  transform:translateY(-1px);
+}
+
+.divider {
+  text-align:center;
+  margin:24px 0;
+  position:relative;
+  color:var(--text-muted);
+  font-size:14px;
+}
+
+@media(max-width:480px) {
+  .login-container {
+    margin:20px;
+    padding:32px 24px;
+  }
+  .logo-text {
+    font-size:24px;
+  }
+  .login-title {
+    font-size:20px;
+  }
+  .form-control {
+    padding:12px 14px;
+    font-size:16px; /* Prevents zoom on iOS */
+  }
+  .btn {
+    padding:12px 20px;
+    font-size:14px;
+  }
+}
+
+@media(max-width:360px) {
+  .login-container {
+    margin:10px;
+    padding:24px 16px;
+  }
+  .logo-text {
+    font-size:22px;
+  }
+  .login-title {
+    font-size:18px;
+  }
+}
+
+/* Touch improvements */
+@media(hover:none) and (pointer:coarse) {
+  .btn {
+    min-height:44px;
+  }
+  .form-control {
+    min-height:44px;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="login-container">
+  <div class="logo-section">
+    <div class="logo-icon">
+      <img src="assets/images/immacurate logo.jpeg" alt="Immacurate Logo">
+    </div>
+    <div class="logo-text">IMMACURATE</div>
+    <div class="logo-sub">Driving School</div>
+  </div>
+
+  <div class="login-title">Welcome Back</div>
+  <div class="login-subtitle">Sign in to your account</div>
+
+
+
+  <form id="loginForm" onsubmit="handleLogin(event)">
+    <div class="form-group">
+      <label class="form-label">Email or Phone</label>
+      <input class="form-control" type="text" name="username" required placeholder="Enter your email or phone">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Password</label>
+      <input class="form-control" type="password" name="password" required placeholder="Enter your password">
+    </div>
+
+    <div class="login-options">
+      <label class="remember-me">
+        <input type="checkbox" name="remember">
+        Remember me
+      </label>
+      <a href="#" class="forgot-password">Forgot Password?</a>
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+      Sign In
+    </button>
+  </form>
+
+  <div class="divider">
+    <span>or</span>
+  </div>
+
+  <button class="btn btn-accent" onclick="demoLogin()">
+    Demo Login
+  </button>
+</div>
+
+<script>
+function handleLogin(event) {
+  event.preventDefault();
+  
+  const formData = new FormData(event.target);
+  const username = formData.get('username');
+  const password = formData.get('password');
+  
+  // Get registered users from localStorage
+  const registeredUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+  const systemUsers = JSON.parse(localStorage.getItem('systemUsers') || '[]');
+  
+  // Check system admin login (you - Hamisi)
+  if (username === 'hamisi.911.ltd@gmail.com' && password === '911Hamisi.') {
+    localStorage.setItem('userType', 'system-admin');
+    localStorage.setItem('username', 'Hamisi - System Administrator');
+    localStorage.setItem('userId', 'hamisi-admin-001');
+    window.location.href = 'index.html';
+    return;
+  }
+  
+  // Legacy system admin login (backup)
+  if (username === 'sysadmin' && password === 'sysadmin123') {
+    localStorage.setItem('userType', 'system-admin');
+    localStorage.setItem('username', 'System Administrator');
+    localStorage.setItem('userId', 'sys-admin-001');
+    window.location.href = 'index.html';
+    return;
+  }
+  
+  // Check system users (managers/admins you've assigned)
+  const systemUser = systemUsers.find(user => 
+    (user.email === username || user.phone === username) && user.password === password
+  );
+  
+  if (systemUser) {
+    localStorage.setItem('userType', systemUser.role); // 'admin' or 'manager'
+    localStorage.setItem('username', systemUser.name);
+    localStorage.setItem('userId', systemUser.id);
+    window.location.href = 'index.html';
+    return;
+  }
+  
+  // Check registered students (**email as username, phone as password**)
+  const student = registeredUsers.find(user => 
+    user.email === username && user.phone === password
+  );
+  
+  if (student) {
+    localStorage.setItem('userType', 'student');
+    localStorage.setItem('username', student.name);
+    localStorage.setItem('userId', student.id);
+    localStorage.setItem('studentData', JSON.stringify(student));
+    window.location.href = 'student-portal.html';
+    return;
+  }
+  
+  alert('**Invalid credentials. Please check your EMAIL and PHONE NUMBER, or contact the administrator.**');
+}
+
+function demoLogin() {
+  // Demo as system admin (Hamisi)
+  localStorage.setItem('userType', 'system-admin');
+  localStorage.setItem('username', 'Hamisi - System Administrator');
+  localStorage.setItem('userId', 'hamisi-admin-001');
+  window.location.href = 'index.html';
+}
+</script>
+
+</body>
+</html>

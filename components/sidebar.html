@@ -1,0 +1,68 @@
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-mark">
+      <div class="logo-icon-img">
+        <img src="../assets/images/immacurate logo.jpeg" alt="Immacurate Logo">
+      </div>
+      <div>
+        <div class="logo-text">IMMACURATE</div>
+        <div class="logo-sub" style="color:white;">Driving School</div>
+      </div>
+    </div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Main</div>
+    <div class="nav-item" onclick="navigate('dashboard',this)">
+      <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Dashboard
+    </div>
+    <div class="nav-item system-admin-only" onclick="navigate('user-management',this)" style="display:none;">
+      <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      User Management
+    </div>
+    <div class="nav-item" onclick="navigate('students',this)">
+      <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      Students
+      <span class="nav-badge">4</span>
+    </div>
+    <div class="nav-item" onclick="navigate('courses',this)">
+      <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      Courses
+    </div>
+    <div class="nav-item" onclick="navigate('schedule',this)">
+      <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Schedule
+    </div>
+    <div class="nav-section-label">Finance</div>
+    <div class="nav-item" onclick="navigate('payments',this)">
+      <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+      Payments
+    </div>
+    <div class="nav-section-label">Communication</div>
+    <div class="nav-item" onclick="navigate('communication',this)">
+      <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      Messages
+      <span class="nav-badge">3</span>
+    </div>
+    <div class="nav-item" onclick="navigate('reports',this)">
+      <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      Reports
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <div style="padding:8px 12px;color:rgba(255,255,255,0.6);font-size:12px;">
+      <div style="display:flex;align-items:center;justify-content:flex-start;gap:8px;margin-bottom:2px;">
+        <img src="../assets/images/GLOTECH-LOGO.jpeg" alt="GLOTECH Logo" style="width:18px;height:18px;border-radius:3px;">
+        <div style="color:white;font-weight:600;font-size:11px;">GLOTECH</div>
+      </div>
+      <div style="color:rgba(255,255,255,0.7);font-size:9px;font-weight:500;line-height:1.2;margin-left:0px;">
+        YOUR TECHNOLOGY PARTNER<br>
+        0759159881
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- Mobile Overlay -->
+<div class="mobile-overlay" id="mobileOverlay" onclick="closeSidebar()"></div>
