@@ -247,7 +247,7 @@ body {
   </div>
 
   <div class="login-title">Welcome Back</div>
-  <div class="login-subtitle">Sign in to your account</div>
+  <div class="login-subtitle">Use admin/admin123 for default login</div>
 
 
 
@@ -292,63 +292,23 @@ function handleLogin(event) {
   const username = formData.get('username');
   const password = formData.get('password');
   
-  // Get registered users from localStorage
-  const registeredUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
-  const systemUsers = JSON.parse(localStorage.getItem('systemUsers') || '[]');
-  
-  // Check system admin login (you - Hamisi)
-  if (username === 'hamisi.911.ltd@gmail.com' && password === '911Hamisi.') {
-    localStorage.setItem('userType', 'system-admin');
-    localStorage.setItem('username', 'Hamisi - System Administrator');
-    localStorage.setItem('userId', 'hamisi-admin-001');
-    window.location.href = 'index.html';
-    return;
-  }
-  
-  // Legacy system admin login (backup)
-  if (username === 'sysadmin' && password === 'sysadmin123') {
+  // Default admin login only
+  if (username === 'admin' && password === 'admin123') {
     localStorage.setItem('userType', 'system-admin');
     localStorage.setItem('username', 'System Administrator');
-    localStorage.setItem('userId', 'sys-admin-001');
+    localStorage.setItem('userId', 'admin-001');
     window.location.href = 'index.html';
     return;
   }
   
-  // Check system users (managers/admins you've assigned)
-  const systemUser = systemUsers.find(user => 
-    (user.email === username || user.phone === username) && user.password === password
-  );
-  
-  if (systemUser) {
-    localStorage.setItem('userType', systemUser.role); // 'admin' or 'manager'
-    localStorage.setItem('username', systemUser.name);
-    localStorage.setItem('userId', systemUser.id);
-    window.location.href = 'index.html';
-    return;
-  }
-  
-  // Check registered students (**email as username, phone as password**)
-  const student = registeredUsers.find(user => 
-    user.email === username && user.phone === password
-  );
-  
-  if (student) {
-    localStorage.setItem('userType', 'student');
-    localStorage.setItem('username', student.name);
-    localStorage.setItem('userId', student.id);
-    localStorage.setItem('studentData', JSON.stringify(student));
-    window.location.href = 'student-portal.html';
-    return;
-  }
-  
-  alert('**Invalid credentials. Please check your EMAIL and PHONE NUMBER, or contact the administrator.**');
+  alert('Invalid credentials. Use admin/admin123 for default login.');
 }
 
 function demoLogin() {
-  // Demo as system admin (Hamisi)
+  // Demo as system admin
   localStorage.setItem('userType', 'system-admin');
-  localStorage.setItem('username', 'Hamisi - System Administrator');
-  localStorage.setItem('userId', 'hamisi-admin-001');
+  localStorage.setItem('username', 'System Administrator');
+  localStorage.setItem('userId', 'admin-001');
   window.location.href = 'index.html';
 }
 </script>
