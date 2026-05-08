@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <div style="text-align:center;padding:100px;">
+    <h1><%= error.status || 500 %></h1>
+    <h2><%= message %></h2>
+    <% if (process.env.NODE_ENV === 'development' && error.stack) { %>
+      <pre><%= error.stack %></pre>
+    <% } %>
+    <a href="/" class="btn btn-accent">Go Home</a>
+  </div>
+</body>
+</html>

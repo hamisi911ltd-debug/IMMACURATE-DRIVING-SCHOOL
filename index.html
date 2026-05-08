@@ -1640,11 +1640,8 @@
     <form onsubmit="recordPayment(event)">
       <div class="form-group">
         <label class="form-label">Student</label>
-        <select class="form-control" name="student" required>
-          <option value="">Select Student</option>
-          <option value="amina-kamau">Amina Kamau</option>
-          <option value="brian-njoroge">Brian Njoroge</option>
-          <option value="dennis-waweru">Dennis Waweru</option>
+        <select class="form-control" name="student" id="paymentStudentSelect" required>
+          <option value="">Loading students...</option>
         </select>
       </div>
       <div class="form-row">
@@ -1661,6 +1658,16 @@
             <option value="cash">Cash</option>
           </select>
         </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Payment Type</label>
+        <select class="form-control" name="paymentType" required>
+          <option value="">Select Type</option>
+          <option value="tuition">Tuition Fee</option>
+          <option value="registration">Registration Fee</option>
+          <option value="exam">Exam Fee</option>
+          <option value="other">Other</option>
+        </select>
       </div>
       <div class="form-group">
         <label class="form-label">Reference Number</label>
