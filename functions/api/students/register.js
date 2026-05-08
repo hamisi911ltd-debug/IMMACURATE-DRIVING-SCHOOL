@@ -19,22 +19,75 @@ export async function onRequestPost(context) {
       });
     }
 
+    // Check if email already exists
+    const existingEmail = await context.env.DB.prepare(
+      'SELECT student_id FROM students WHERE email = ?'
+    ).bind(data.email).first();
+
+    if (existingEmail) {
+      return new Response(JSON.stringify({
+        success: false,
+        error: 'A student with this email already exists',
+        field: 'email'
+      }), {
+        status: 409,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        }
+      });
+    }
+
+    // Check if phone already exists
+    const existingPhone = await context.env.DB.prepare(
+      'SELECT student_id FROM students WHERE phone = ?'
+    ).bind(data.phone).first();
+
+    if (existingPhone) {
+      return new Response(JSON.stringify({
+        success: false,
+        error: 'A student with this phone number already exists',
+        field: 'phone'
+      }), {
+        status: 409,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        }
+      });
+    }
+
     // Generate unique student ID
     const studentId = `student-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
     
     // Insert student
-    await context.env.DB.prepare(`
-      INSERT INTO students (
-        student_id, first_name, last_name, email, phone, created_by
-      ) VALUES (?, ?, ?, ?, ?, ?)
-    `).bind(
-      studentId,
-      data.firstName,
-      data.lastName,
-      data.email,
-      data.phone,
-      'admin-001'
-    ).run();
+    try {
+      await context.env.DB.prepare(`
+        INSERT INTO students (
+          student_id, first_name, last_name, email, phone, created_by
+        ) VALUES (?, ?, ?, ?, ?, ?)
+      `).bind(
+        studentId,
+        data.firstName,
+        data.lastName,
+        data.email,
+        data.phone,
+        'admin-001'
+      ).run();
+    } catch (insertError) {
+      console.error('Database insert error:', insertError);
+      return new Response(JSON.stringify({
+        success: false,
+        error: 'Failed to register student. Please check if email or phone already exists.',
+        details: insertError.message
+      }), {
+        status: 500,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        }
+      });
+    }
 
     // If course is selected, create enrollment
     if (data.course) {
