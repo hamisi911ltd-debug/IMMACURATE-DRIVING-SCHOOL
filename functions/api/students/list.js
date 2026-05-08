@@ -1,9 +1,21 @@
-// GET /api/students/list
-// List all students with their enrollment and balance information
+import { authenticate } from '../_auth.js'
 
 export async function onRequestGet(context) {
+  const { request, env } = context
+
   try {
-    const { results } = await context.env.DB.prepare(`
+    // Authenticate user
+    await authenticate(request)
+
+    // Parse query parameters
+    const url = new URL(request.url)
+    const page = parseInt(url.searchParams.get('page') || '1')
+    const limit = parseInt(url.searchParams.get('limit') || '50')
+    const status = url.searchParams.get('status')
+    const course = url.searchParams.get('course')
+
+    // Build query
+    let query = `
       SELECT 
         s.id,
         s.student_id,
@@ -26,31 +38,48 @@ export async function onRequestGet(context) {
       LEFT JOIN student_enrollments se ON s.student_id = se.student_id
       LEFT JOIN courses c ON se.course_id = c.course_id
       LEFT JOIN student_balances sb ON s.student_id = sb.student_id
-      WHERE s.status != 'dropped'
-      ORDER BY s.created_at DESC
-    `).all();
+      WHERE 1=1
+    `
+
+    const params = []
+
+    if (status) {
+      query += ' AND s.status = ?'
+      params.push(status)
+    }
+
+    if (course) {
+      query += ' AND se.course_id = ?'
+      params.push(course)
+    }
+
+    query += ' ORDER BY s.created_at DESC LIMIT ? OFFSET ?'
+    params.push(limit, (page - 1) * limit)
+
+    // Execute query
+    const stmt = env.DB.prepare(query).bind(...params)
+    const { results } = await stmt.all()
 
     return new Response(JSON.stringify({
       success: true,
       students: results,
-      count: results.length
+      count: results.length,
+      page,
+      limit
     }), {
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      }
-    });
+      status: 200,
+      headers: { 'Content-Type': 'application/json' }
+    })
+
   } catch (error) {
-    console.error('Error fetching students:', error);
+    console.error('List students error:', error)
+
     return new Response(JSON.stringify({
       success: false,
-      error: error.message
+      error: error.message || 'Failed to fetch students'
     }), {
-      status: 500,
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      }
-    });
+      status: error.message === 'No token provided' || error.message === 'Invalid or expired token' ? 401 : 500,
+      headers: { 'Content-Type': 'application/json' }
+    })
   }
 }

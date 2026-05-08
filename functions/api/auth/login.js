@@ -1,27 +1,26 @@
-// POST /api/auth/login
-// Authenticate user
+import { generateToken, verifyPassword } from '../_auth.js'
 
 export async function onRequestPost(context) {
+  const { request, env } = context
+
   try {
-    const data = await context.request.json();
-    
-    if (!data.email || !data.password) {
+    const { email, password } = await request.json()
+
+    // Validation
+    if (!email || !password) {
       return new Response(JSON.stringify({
         success: false,
         error: 'Email and password are required'
       }), {
         status: 400,
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        }
-      });
+        headers: { 'Content-Type': 'application/json' }
+      })
     }
 
-    // Get user from database
-    const user = await context.env.DB.prepare(
-      'SELECT * FROM system_users WHERE email = ? AND status = "active"'
-    ).bind(data.email).first();
+    // Find user in D1 database
+    const user = await env.DB.prepare(
+      'SELECT * FROM system_users WHERE email = ? AND status = ?'
+    ).bind(email, 'active').first()
 
     if (!user) {
       return new Response(JSON.stringify({
@@ -29,70 +28,51 @@ export async function onRequestPost(context) {
         error: 'Invalid credentials'
       }), {
         status: 401,
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        }
-      });
+        headers: { 'Content-Type': 'application/json' }
+      })
     }
 
-    // For now, simple password check (in production, use bcrypt)
-    // This matches the default password from seed data
-    const isValidPassword = data.password === '911Hamisi.';
+    // Verify password
+    const isValid = verifyPassword(password, user.password_hash)
 
-    if (!isValidPassword) {
+    if (!isValid) {
       return new Response(JSON.stringify({
         success: false,
         error: 'Invalid credentials'
       }), {
         status: 401,
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        }
-      });
+        headers: { 'Content-Type': 'application/json' }
+      })
     }
 
-    // Update last login
-    await context.env.DB.prepare(
-      'UPDATE system_users SET last_login = CURRENT_TIMESTAMP WHERE user_id = ?'
-    ).bind(user.user_id).run();
+    // Generate token
+    const token = generateToken(user.user_id)
 
-    // Return user data (exclude password)
-    const { password_hash, ...userData } = user;
-    
+    // Return success response
     return new Response(JSON.stringify({
       success: true,
-      user: userData,
-      message: 'Login successful'
+      user: {
+        id: user.user_id,
+        name: `${user.first_name} ${user.last_name}`,
+        email: user.email,
+        role: user.role
+      },
+      token
     }), {
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      }
-    });
+      status: 200,
+      headers: { 'Content-Type': 'application/json' }
+    })
+
   } catch (error) {
-    console.error('Login error:', error);
+    console.error('Login error:', error)
+    
     return new Response(JSON.stringify({
       success: false,
-      error: error.message
+      error: 'Login failed',
+      message: error.message
     }), {
       status: 500,
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      }
-    });
+      headers: { 'Content-Type': 'application/json' }
+    })
   }
-}
-
-// Handle OPTIONS for CORS
-export async function onRequestOptions() {
-  return new Response(null, {
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type'
-    }
-  });
 }

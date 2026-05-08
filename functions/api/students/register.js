@@ -1,28 +1,36 @@
-// POST /api/students/register
-// Register a new student
+import { authenticate } from '../_auth.js'
+
+function generateId(prefix) {
+  const timestamp = Date.now().toString(36)
+  const random = Math.random().toString(36).substring(2, 7)
+  return `${prefix}-${timestamp}${random}`.toUpperCase()
+}
 
 export async function onRequestPost(context) {
+  const { request, env } = context
+
   try {
-    const data = await context.request.json();
-    
-    // Validate required fields
-    if (!data.firstName || !data.lastName || !data.email || !data.phone) {
+    // Authenticate user
+    const userId = await authenticate(request)
+
+    // Parse request body
+    const { firstName, lastName, email, phone, course } = await request.json()
+
+    // Validation
+    if (!firstName || !lastName || !email || !phone) {
       return new Response(JSON.stringify({
         success: false,
-        error: 'Missing required fields'
+        error: 'All fields are required'
       }), {
         status: 400,
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        }
-      });
+        headers: { 'Content-Type': 'application/json' }
+      })
     }
 
-    // Check if email already exists
-    const existingEmail = await context.env.DB.prepare(
+    // Check if email exists
+    const existingEmail = await env.DB.prepare(
       'SELECT student_id FROM students WHERE email = ?'
-    ).bind(data.email).first();
+    ).bind(email).first()
 
     if (existingEmail) {
       return new Response(JSON.stringify({
@@ -31,17 +39,14 @@ export async function onRequestPost(context) {
         field: 'email'
       }), {
         status: 409,
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        }
-      });
+        headers: { 'Content-Type': 'application/json' }
+      })
     }
 
-    // Check if phone already exists
-    const existingPhone = await context.env.DB.prepare(
+    // Check if phone exists
+    const existingPhone = await env.DB.prepare(
       'SELECT student_id FROM students WHERE phone = ?'
-    ).bind(data.phone).first();
+    ).bind(phone).first()
 
     if (existingPhone) {
       return new Response(JSON.stringify({
@@ -50,101 +55,63 @@ export async function onRequestPost(context) {
         field: 'phone'
       }), {
         status: 409,
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        }
-      });
+        headers: { 'Content-Type': 'application/json' }
+      })
     }
 
-    // Generate unique student ID
-    const studentId = `student-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-    
+    const studentId = generateId('STU')
+
     // Insert student
-    try {
-      await context.env.DB.prepare(`
-        INSERT INTO students (
-          student_id, first_name, last_name, email, phone, created_by
-        ) VALUES (?, ?, ?, ?, ?, ?)
-      `).bind(
-        studentId,
-        data.firstName,
-        data.lastName,
-        data.email,
-        data.phone,
-        'admin-001'
-      ).run();
-    } catch (insertError) {
-      console.error('Database insert error:', insertError);
-      return new Response(JSON.stringify({
-        success: false,
-        error: 'Failed to register student. Please check if email or phone already exists.',
-        details: insertError.message
-      }), {
-        status: 500,
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        }
-      });
-    }
+    await env.DB.prepare(`
+      INSERT INTO students (
+        student_id, first_name, last_name, email, phone, 
+        status, enrollment_date, created_by
+      ) VALUES (?, ?, ?, ?, ?, 'active', date('now'), ?)
+    `).bind(studentId, firstName, lastName, email, phone, userId).run()
 
-    // If course is selected, create enrollment
-    if (data.course) {
-      const enrollmentId = `enrollment-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-      
-      await context.env.DB.prepare(`
+    // If course selected, create enrollment
+    if (course) {
+      const enrollmentId = generateId('ENR')
+
+      await env.DB.prepare(`
         INSERT INTO student_enrollments (
-          enrollment_id, student_id, course_id, status
-        ) VALUES (?, ?, ?, 'enrolled')
-      `).bind(enrollmentId, studentId, data.course).run();
+          enrollment_id, student_id, course_id, 
+          status, start_date, progress_percentage, lessons_completed
+        ) VALUES (?, ?, ?, 'enrolled', date('now'), 0, 0)
+      `).bind(enrollmentId, studentId, course).run()
 
       // Get course fee and initialize balance
-      const course = await context.env.DB.prepare(
+      const courseData = await env.DB.prepare(
         'SELECT total_fee FROM courses WHERE course_id = ?'
-      ).bind(data.course).first();
+      ).bind(course).first()
 
-      if (course) {
-        await context.env.DB.prepare(`
+      if (courseData) {
+        await env.DB.prepare(`
           INSERT INTO student_balances (
-            student_id, total_fees, total_paid, status
-          ) VALUES (?, ?, 0, 'current')
-        `).bind(studentId, course.total_fee).run();
+            student_id, total_fees, total_paid, balance_due, status
+          ) VALUES (?, ?, 0, ?, 'current')
+        `).bind(studentId, courseData.total_fee, courseData.total_fee).run()
       }
     }
 
     return new Response(JSON.stringify({
       success: true,
       message: 'Student registered successfully',
-      studentId: studentId
+      studentId
     }), {
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      }
-    });
+      status: 201,
+      headers: { 'Content-Type': 'application/json' }
+    })
+
   } catch (error) {
-    console.error('Error registering student:', error);
+    console.error('Register student error:', error)
+
     return new Response(JSON.stringify({
       success: false,
-      error: error.message
+      error: error.message || 'Failed to register student'
     }), {
-      status: 500,
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      }
-    });
+      status: error.message === 'No token provided' || error.message === 'Invalid or expired token' ? 401 : 500,
+      headers: { 'Content-Type': 'application/json' }
+    })
   }
-}
-
-// Handle OPTIONS for CORS
-export async function onRequestOptions() {
-  return new Response(null, {
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type'
-    }
-  });
 }
