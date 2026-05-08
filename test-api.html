@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>API Test Page - DSMS</title>
+<style>
+body { font-family: Arial, sans-serif; max-width: 1200px; margin: 20px auto; padding: 20px; }
+.test-section { background: #f5f5f5; padding: 20px; margin: 20px 0; border-radius: 8px; }
+button { background: #0D1B3E; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; margin: 5px; }
+button:hover { background: #1A2F5C; }
+.result { background: white; padding: 15px; margin-top: 10px; border-radius: 5px; border: 1px solid #ddd; }
+pre { background: #2d2d2d; color: #f8f8f2; padding: 15px; border-radius: 5px; overflow-x: auto; }
+.success { color: green; font-weight: bold; }
+.error { color: red; font-weight: bold; }
+h2 { color: #0D1B3E; }
+</style>
+</head>
+<body>
+
+<h1>DSMS API Test Page</h1>
+<p>Test your Cloudflare Pages Functions and D1 database connection</p>
+
+<!-- Dashboard Stats -->
+<div class="test-section">
+  <h2>Dashboard Stats</h2>
+  <button onclick="testDashboard()">Get Dashboard Stats</button>
+  <div id="dashboard-result" class="result" style="display:none;"></div>
+</div>
+
+<!-- Students -->
+<div class="test-section">
+  <h2>Students</h2>
+  <button onclick="testListStudents()">List All Students</button>
+  <button onclick="testRegisterStudent()">Register Test Student</button>
+  <div id="students-result" class="result" style="display:none;"></div>
+</div>
+
+<!-- Courses -->
+<div class="test-section">
+  <h2>Courses</h2>
+  <button onclick="testListCourses()">List All Courses</button>
+  <div id="courses-result" class="result" style="display:none;"></div>
+</div>
+
+<!-- Lessons -->
+<div class="test-section">
+  <h2>Lessons</h2>
+  <button onclick="testListLessons()">List Today's Lessons</button>
+  <div id="lessons-result" class="result" style="display:none;"></div>
+</div>
+
+<!-- Payments -->
+<div class="test-section">
+  <h2>Payments</h2>
+  <button onclick="testRecordPayment()">Record Test Payment</button>
+  <div id="payments-result" class="result" style="display:none;"></div>
+</div>
+
+<script>
+// Helper function to display results
+function displayResult(elementId, data, success = true) {
+  const element = document.getElementById(elementId);
+  element.style.display = 'block';
+  
+  const statusClass = success ? 'success' : 'error';
+  const statusText = success ? 'SUCCESS' : 'ERROR';
+  
+  element.innerHTML = `
+    <div class="${statusClass}">${statusText}</div>
+    <pre>${JSON.stringify(data, null, 2)}</pre>
+  `;
+}
+
+// Test Dashboard Stats
+async function testDashboard() {
+  try {
+    const response = await fetch('/api/dashboard/stats');
+    const data = await response.json();
+    displayResult('dashboard-result', data, data.success);
+  } catch (error) {
+    displayResult('dashboard-result', { error: error.message }, false);
+  }
+}
+
+// Test List Students
+async function testListStudents() {
+  try {
+    const response = await fetch('/api/students/list');
+    const data = await response.json();
+    displayResult('students-result', data, data.success);
+  } catch (error) {
+    displayResult('students-result', { error: error.message }, false);
+  }
+}
+
+// Test Register Student
+async function testRegisterStudent() {
+  const testStudent = {
+    firstName: 'Test',
+    lastName: 'Student',
+    email: `test${Date.now()}@example.com`,
+    phone: `+25470${Math.floor(Math.random() * 10000000)}`,
+    course: 'class-b'
+  };
+  
+  try {
+    const response = await fetch('/api/students/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(testStudent)
+    });
+    const data = await response.json();
+    displayResult('students-result', { request: testStudent, response: data }, data.success);
+  } catch (error) {
+    displayResult('students-result', { error: error.message }, false);
+  }
+}
+
+// Test List Courses
+async function testListCourses() {
+  try {
+    const response = await fetch('/api/courses/list');
+    const data = await response.json();
+    displayResult('courses-result', data, data.success);
+  } catch (error) {
+    displayResult('courses-result', { error: error.message }, false);
+  }
+}
+
+// Test List Lessons
+async function testListLessons() {
+  try {
+    const response = await fetch('/api/lessons/list');
+    const data = await response.json();
+    displayResult('lessons-result', data, data.success);
+  } catch (error) {
+    displayResult('lessons-result', { error: error.message }, false);
+  }
+}
+
+// Test Record Payment
+async function testRecordPayment() {
+  // First get a student to test with
+  try {
+    const studentsResponse = await fetch('/api/students/list');
+    const studentsData = await studentsResponse.json();
+    
+    if (!studentsData.success || studentsData.students.length === 0) {
+      displayResult('payments-result', { error: 'No students found. Register a student first.' }, false);
+      return;
+    }
+    
+    const testPayment = {
+      student: studentsData.students[0].student_id,
+      amount: 5000.00,
+      method: 'mpesa',
+      paymentType: 'tuition',
+      reference: `TEST${Date.now()}`
+    };
+    
+    const response = await fetch('/api/payments/record', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(testPayment)
+    });
+    const data = await response.json();
+    displayResult('payments-result', { request: testPayment, response: data }, data.success);
+  } catch (error) {
+    displayResult('payments-result', { error: error.message }, false);
+  }
+}
+
+// Auto-load dashboard on page load
+window.addEventListener('DOMContentLoaded', () => {
+  console.log('API Test Page Loaded');
+  console.log('Click buttons above to test each API endpoint');
+});
+</script>
+
+</body>
+</html>
