@@ -2413,67 +2413,58 @@ function useTemplate(templateType) {
 }
 
 // Form submissions
-function addStudent(event) {
+async function addStudent(event) {
   event.preventDefault();
   const formData = new FormData(event.target);
   const studentData = Object.fromEntries(formData);
   
-  // Get existing registered users
-  const registeredUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
-  
-  // Check if email already exists
-  if (registeredUsers.find(user => user.email === studentData.email)) {
-    alert('A student with this email is already registered!');
-    return;
-  }
-  
-  // Check if phone already exists
-  if (registeredUsers.find(user => user.phone === studentData.phone)) {
-    alert('A student with this phone number is already registered!');
-    return;
-  }
-  
-  // Get current user info
-  const currentUserId = localStorage.getItem('userId');
-  const currentUserName = localStorage.getItem('username');
-  
-  // Create new student record
-  const newStudent = {
-    id: 'student-' + Date.now(),
-    name: `${studentData.firstName} ${studentData.lastName}`,
-    firstName: studentData.firstName,
-    lastName: studentData.lastName,
-    email: studentData.email,
-    phone: studentData.phone,
-    course: studentData.course,
-    status: 'active',
-    enrolledAt: new Date().toISOString().split('T')[0],
-    registeredBy: currentUserId,
-    registeredByName: currentUserName
-  };
-  
-  // Add to registered users
-  registeredUsers.push(newStudent);
-  localStorage.setItem('registeredUsers', JSON.stringify(registeredUsers));
-  
-  // Show success message with login credentials
-  const successMessage = `
-    **Student registered successfully!**
+  try {
+    // Call API to register student
+    const response = await fetch('/api/students/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        firstName: studentData.firstName,
+        lastName: studentData.lastName,
+        email: studentData.email,
+        phone: studentData.phone,
+        course: studentData.course
+      })
+    });
     
-    **Login Credentials:**
-    **Username: ${studentData.email}**
-    **Password: ${studentData.phone}**
+    const result = await response.json();
     
-    **The student can now login to the student portal using:**
-    **EMAIL as USERNAME and PHONE NUMBER as PASSWORD**
-  `;
-  
-  alert(successMessage);
-  closeModal('addStudentModal');
-  event.target.reset();
-  
-  // Show notification
-  showNotification('Student registered successfully!', 'success');
+    if (result.success) {
+      // Show success message with login credentials
+      const successMessage = `Student registered successfully!
+
+Login Credentials:
+Username: ${studentData.email}
+Password: ${studentData.phone}
+
+The student can now login to the student portal using:
+EMAIL as USERNAME and PHONE NUMBER as PASSWORD`;
+      
+      alert(successMessage);
+      closeModal('addStudentModal');
+      event.target.reset();
+      
+      // Reload students list if on students page
+      if (typeof loadStudentsList === 'function') {
+        loadStudentsList();
+      }
+      
+      // Show notification
+      if (typeof showNotification === 'function') {
+        showNotification('Student registered successfully!', 'success');
+      }
+    } else {
+      alert('Error: ' + (result.error || 'Failed to register student'));
+    }
+  } catch (error) {
+    console.error('Error registering student:', error);
+    alert('Error: Failed to register student. Please check your connection and try again.');
+  }
 }
 
 function addCourse(event) {
@@ -2487,68 +2478,120 @@ function addCourse(event) {
   event.target.reset();
 }
 
-function scheduleLesson(event) {
+async function scheduleLesson(event) {
   event.preventDefault();
   const formData = new FormData(event.target);
   const lesson = Object.fromEntries(formData);
   
-  console.log('Scheduling lesson:', lesson);
-  alert('Lesson scheduled successfully!');
-  closeModal('addLessonModal');
-  event.target.reset();
+  try {
+    // Call API to schedule lesson
+    const response = await fetch('/api/lessons/schedule', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        student: lesson.student,
+        instructor: lesson.instructor,
+        vehicle: lesson.vehicle,
+        date: lesson.date,
+        time: lesson.time,
+        duration: parseInt(lesson.duration) || 60,
+        lessonType: lesson.lessonType || 'practical'
+      })
+    });
+    
+    const result = await response.json();
+    
+    if (result.success) {
+      alert('Lesson scheduled successfully!');
+      closeModal('addLessonModal');
+      event.target.reset();
+      
+      // Reload lessons list if function exists
+      if (typeof loadLessonsList === 'function') {
+        loadLessonsList();
+      }
+      
+      if (typeof showNotification === 'function') {
+        showNotification('Lesson scheduled successfully!', 'success');
+      }
+    } else {
+      alert('Error: ' + (result.error || 'Failed to schedule lesson'));
+    }
+  } catch (error) {
+    console.error('Error scheduling lesson:', error);
+    alert('Error: Failed to schedule lesson. Please check your connection and try again.');
+  }
 }
 
-function recordPayment(event) {
+async function recordPayment(event) {
   event.preventDefault();
   const formData = new FormData(event.target);
   const payment = Object.fromEntries(formData);
   
-  // Create payment record
-  const paymentRecord = {
-    id: 'payment-' + Date.now(),
-    student: payment.student,
-    amount: payment.amount,
-    method: payment.method,
-    reference: payment.reference,
-    date: new Date().toLocaleDateString(),
-    status: 'Paid',
-    recordedBy: localStorage.getItem('username') || 'Admin'
-  };
-  
-  // Save payment record (in real app, this would go to database)
-  const payments = JSON.parse(localStorage.getItem('paymentRecords') || '[]');
-  payments.push(paymentRecord);
-  localStorage.setItem('paymentRecords', JSON.stringify(payments));
-  
-  console.log('Recording payment:', paymentRecord);
-  
-  // Ask if user wants to generate receipt immediately
-  const generateReceipt = confirm(`Payment recorded successfully!\n\nWould you like to generate a receipt for this payment?`);
-  
-  if (generateReceipt) {
-    // Generate receipt immediately
-    const receiptNumber = getNextReceiptNumber();
+  try {
+    // Call API to record payment
+    const response = await fetch('/api/payments/record', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        student: payment.student,
+        amount: parseFloat(payment.amount),
+        method: payment.method,
+        paymentType: payment.paymentType || 'tuition',
+        reference: payment.reference
+      })
+    });
     
-    const receiptData = {
-      receiptNo: receiptNumber,
-      student: payment.student,
-      course: 'Course Name', // In real app, get from student record
-      amount: payment.amount,
-      method: payment.method,
-      date: new Date().toLocaleDateString(),
-      status: 'Paid'
-    };
+    const result = await response.json();
     
-    generateReceiptPDF(receiptData);
-    updateNextReceiptNumber();
-    
-    showNotification(`Payment recorded and Receipt #${receiptNumber} generated!`, 'success');
-  } else {
-    showNotification('Payment recorded successfully!', 'success');
+    if (result.success) {
+      // Ask if user wants to generate receipt immediately
+      const generateReceipt = confirm(`Payment recorded successfully!\n\nWould you like to generate a receipt for this payment?`);
+      
+      if (generateReceipt) {
+        // Generate receipt immediately
+        const receiptNumber = result.receiptNumber || getNextReceiptNumber();
+        
+        const receiptData = {
+          receiptNo: receiptNumber,
+          student: payment.student,
+          course: 'Course Name', // In real app, get from student record
+          amount: payment.amount,
+          method: payment.method,
+          date: new Date().toLocaleDateString(),
+          status: 'Paid'
+        };
+        
+        if (typeof generateReceiptPDF === 'function') {
+          generateReceiptPDF(receiptData);
+        }
+        if (typeof updateNextReceiptNumber === 'function') {
+          updateNextReceiptNumber();
+        }
+        
+        if (typeof showNotification === 'function') {
+          showNotification(`Payment recorded and Receipt #${receiptNumber} generated!`, 'success');
+        }
+      } else {
+        if (typeof showNotification === 'function') {
+          showNotification('Payment recorded successfully!', 'success');
+        }
+      }
+      
+      closeModal('recordPaymentModal');
+      event.target.reset();
+      
+      // Reload payments list if function exists
+      if (typeof loadPaymentsList === 'function') {
+        loadPaymentsList();
+      }
+    } else {
+      alert('Error: ' + (result.error || 'Failed to record payment'));
+    }
+  } catch (error) {
+    console.error('Error recording payment:', error);
+    alert('Error: Failed to record payment. Please check your connection and try again.');
   }
-  
-  closeModal('recordPaymentModal');
-  event.target.reset();
 }
 
 function sendBroadcast(event) {
@@ -5578,14 +5621,186 @@ function openReportGenerator() {
   alert('Advanced Report Generator coming soon! Use the category cards above to generate specific reports.');
 }
 
-// Initialize default date for lesson scheduling
+// ============================================
+// API INTEGRATION FUNCTIONS
+// ============================================
+
+// Load students from API
+async function loadStudentsList() {
+  try {
+    const response = await fetch('/api/students/list');
+    const result = await response.json();
+    
+    if (result.success) {
+      const tableBody = document.getElementById('studentsTable');
+      if (!tableBody) return;
+      
+      if (result.students.length === 0) {
+        tableBody.innerHTML = `
+          <tr>
+            <td colspan="6" style="text-align:center;padding:40px;color:var(--text-muted);">
+              <div style="font-size:40px;margin-bottom:12px;">📚</div>
+              <div style="font-size:16px;font-weight:600;margin-bottom:6px;">No students registered yet</div>
+              <div style="font-size:13px;">Click "Add Student" to register your first student</div>
+            </td>
+          </tr>
+        `;
+      } else {
+        tableBody.innerHTML = result.students.map(student => `
+          <tr>
+            <td data-label="Student">
+              <div class="avatar-group">
+                <div class="avatar">${student.first_name.charAt(0)}${student.last_name.charAt(0)}</div>
+                <div>
+                  <div style="font-weight:600;">${student.first_name} ${student.last_name}</div>
+                  <div style="font-size:12px;color:var(--text-muted);">${student.email}</div>
+                </div>
+              </div>
+            </td>
+            <td data-label="Course">${student.course_name || 'Not enrolled'}</td>
+            <td data-label="Progress">
+              <div style="font-size:12px;font-weight:600;margin-bottom:4px;">${student.progress_percentage || 0}%</div>
+              <div class="progress-bar">
+                <div class="progress-fill" style="width:${student.progress_percentage || 0}%"></div>
+              </div>
+            </td>
+            <td data-label="Balance">KES ${(student.balance_due || 0).toLocaleString()}</td>
+            <td data-label="Status">
+              <span class="badge ${student.status === 'active' ? 'success' : student.status === 'graduated' ? 'info' : 'warning'}">
+                ${student.status || 'active'}
+              </span>
+            </td>
+            <td data-label="Actions">
+              <button class="btn btn-sm btn-outline" onclick="viewStudent('${student.student_id}')">View</button>
+            </td>
+          </tr>
+        `).join('');
+      }
+    }
+  } catch (error) {
+    console.error('Error loading students:', error);
+  }
+}
+
+// Load dashboard statistics from API
+async function loadDashboardStats() {
+  try {
+    const response = await fetch('/api/dashboard/stats');
+    const result = await response.json();
+    
+    if (result.success) {
+      const stats = result.stats;
+      
+      // Update stat cards
+      const statCards = document.querySelectorAll('.stat-card');
+      if (statCards[0]) {
+        const totalStudentsValue = statCards[0].querySelector('.stat-value');
+        const totalStudentsTrend = statCards[0].querySelector('.stat-trend');
+        if (totalStudentsValue) totalStudentsValue.textContent = stats.totalStudents || 0;
+        if (totalStudentsTrend) {
+          totalStudentsTrend.textContent = stats.totalStudents > 0 ? `${stats.activeStudents} active students` : 'Ready for new students';
+        }
+      }
+      
+      if (statCards[1]) {
+        const activeCoursesValue = statCards[1].querySelector('.stat-value');
+        if (activeCoursesValue) activeCoursesValue.textContent = stats.activeCourses || 6;
+      }
+      
+      if (statCards[2]) {
+        const revenueValue = statCards[2].querySelector('.stat-value');
+        const revenueTrend = statCards[2].querySelector('.stat-trend');
+        if (revenueValue) revenueValue.textContent = `KES ${(stats.monthlyRevenue || 0).toLocaleString()}`;
+        if (revenueTrend) {
+          revenueTrend.textContent = stats.monthlyRevenue > 0 ? `+${stats.revenueGrowth || 0}% from last month` : 'Ready to start';
+        }
+      }
+      
+      if (statCards[3]) {
+        const pendingValue = statCards[3].querySelector('.stat-value');
+        if (pendingValue) pendingValue.textContent = stats.pendingPayments || 0;
+      }
+    }
+  } catch (error) {
+    console.error('Error loading dashboard stats:', error);
+  }
+}
+
+// Load courses from API
+async function loadCoursesList() {
+  try {
+    const response = await fetch('/api/courses/list');
+    const result = await response.json();
+    
+    if (result.success) {
+      // Update course dropdowns in forms
+      const courseSelects = document.querySelectorAll('select[name="course"]');
+      courseSelects.forEach(select => {
+        select.innerHTML = '<option value="">Select Course</option>' + 
+          result.courses.map(course => 
+            `<option value="${course.course_id}">${course.name} - KES ${course.total_fee.toLocaleString()}</option>`
+          ).join('');
+      });
+    }
+  } catch (error) {
+    console.error('Error loading courses:', error);
+  }
+}
+
+// Load lessons from API
+async function loadLessonsList() {
+  try {
+    const response = await fetch('/api/lessons/list');
+    const result = await response.json();
+    
+    if (result.success) {
+      // Update lessons display if needed
+      console.log('Lessons loaded:', result.lessons);
+    }
+  } catch (error) {
+    console.error('Error loading lessons:', error);
+  }
+}
+
+// Initialize API data on page load
 document.addEventListener('DOMContentLoaded', function() {
+  // Load dashboard stats
+  loadDashboardStats();
+  
+  // Load courses for dropdowns
+  loadCoursesList();
+  
+  // Load students if on students page
+  const studentsSection = document.getElementById('students');
+  if (studentsSection && studentsSection.classList.contains('active')) {
+    loadStudentsList();
+  }
+  
+  // Set default dates
   const today = new Date().toISOString().split('T')[0];
   const dateInputs = document.querySelectorAll('input[type="date"]');
   dateInputs.forEach(input => {
     if (!input.value) input.value = today;
   });
 });
+
+// Reload students when navigating to students page
+const originalNavigate = window.navigate;
+window.navigate = function(sectionId, navItem) {
+  if (typeof originalNavigate === 'function') {
+    originalNavigate(sectionId, navItem);
+  }
+  
+  // Load students when navigating to students page
+  if (sectionId === 'students') {
+    setTimeout(() => loadStudentsList(), 100);
+  }
+  
+  // Load dashboard stats when navigating to dashboard
+  if (sectionId === 'dashboard') {
+    setTimeout(() => loadDashboardStats(), 100);
+  }
+};
 </script>
 
 </body>
